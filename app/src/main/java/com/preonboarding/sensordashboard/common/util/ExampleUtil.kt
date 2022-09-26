@@ -1,4 +1,4 @@
 package com.preonboarding.sensordashboard.common.util
 
-object BindingAdapter {
+object ExampleUtil {
 }
