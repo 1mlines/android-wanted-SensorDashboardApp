@@ -4,15 +4,12 @@
 
     <data>
 
-        <variable
-            name="vm"
-            type="com.preonboarding.sensordashboard.presentation.sensor_history_show.SensorHistoryShowViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.sensor_history_show.SensorHistoryShowFragment">
+        tools:context=".presentation.view.sensor_history_show.SensorHistoryShowFragment">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
