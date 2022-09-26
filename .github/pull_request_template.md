@@ -1,8 +1,8 @@
-## 🌳 관련 이슈
+## 🔥 관련 이슈
 
 close #1
 
-## 🍀 PR Point
+## 🔥 PR Point
 
 - DI
 - Base Activity, Base Fragment
