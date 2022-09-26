@@ -1,4 +1,4 @@
-package com.preonboarding.sensordashboard.di
+package com.preonboarding.sensordashboard.common.di
 
 import com.preonboarding.sensordashboard.data.local.dao.SensorHistoryDao
 import com.preonboarding.sensordashboard.data.local.datasource.SensorHistoryLocalDataSource
