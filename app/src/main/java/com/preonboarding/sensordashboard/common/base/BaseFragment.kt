@@ -26,7 +26,6 @@ abstract class BaseFragment<T : ViewDataBinding>(@LayoutRes val layoutRes: Int) 
     }
 
     override fun onDestroyView() {
-        binding.unbind()
         _binding = null
         super.onDestroyView()
     }
