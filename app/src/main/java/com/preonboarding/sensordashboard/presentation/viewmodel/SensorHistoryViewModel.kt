@@ -1,4 +1,4 @@
-package com.preonboarding.sensordashboard.presentation.sensor_history_list
+package com.preonboarding.sensordashboard.presentation.viewmodel
 
 import com.preonboarding.sensordashboard.common.base.BaseViewModel
 import com.preonboarding.sensordashboard.domain.model.SensorHistory
@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
-class SensorHistoryListViewModel @Inject constructor(
+class SensorHistoryViewModel @Inject constructor(
     getSensorHistoryListUseCase: GetSensorHistoryListUseCase,
     private val deleteSensorHistoryUseCase: DeleteSensorHistoryUseCase,
 ) : BaseViewModel() {
