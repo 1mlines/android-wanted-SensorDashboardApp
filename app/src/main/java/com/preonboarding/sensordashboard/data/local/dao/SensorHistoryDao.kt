@@ -14,7 +14,7 @@ interface SensorHistoryDao {
     @Query("SELECT * FROM sensor_history_table ORDER BY publishedAt DESC")
     fun getSensorHistoryList(): Flow<List<SensorHistory>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveSensorHistory(sensorHistory: SensorHistory)
 
     @Delete
