@@ -8,5 +8,5 @@ import javax.inject.Inject
 class GetSensorHistoryListUseCase @Inject constructor(
     private val sensorHistoryRepository: SensorHistoryRepository,
 ) {
-    operator fun invoke(sensorHistory: SensorHistory): Flow<List<SensorHistory>> = sensorHistoryRepository.getSensorHistoryList()
+    operator fun invoke(): Flow<List<SensorHistory>> = sensorHistoryRepository.getSensorHistoryList()
 }
