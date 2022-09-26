@@ -1,4 +1,4 @@
-package com.preonboarding.sensordashboard.presentation
+package com.preonboarding.sensordashboard.presentation.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
