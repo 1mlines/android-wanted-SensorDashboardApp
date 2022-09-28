@@ -13,7 +13,7 @@ import javax.inject.Inject
 class SensorHistoryMeasureViewModel @Inject constructor(
     private val saveSensorHistoryUseCase: SaveSensorHistoryUseCase,
 ) : BaseViewModel() {
-    var isRun: Boolean = false
+    private var isRun: Boolean = false
     private lateinit var job: Job
     private var interval: Long = 100
 
