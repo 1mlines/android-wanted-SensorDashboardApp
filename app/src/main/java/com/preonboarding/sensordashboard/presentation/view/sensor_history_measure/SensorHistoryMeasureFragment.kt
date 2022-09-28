@@ -93,6 +93,7 @@ class SensorHistoryMeasureFragment :
                 }
             }
             //히스토리에 값 집어넣기
+
             binding.tvHistoryTimer.text = "${ss}:${ms++}"
 
             if (xList.isNotEmpty()) {
@@ -133,6 +134,7 @@ class SensorHistoryMeasureFragment :
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) = Unit
 
     private fun getSensorData(event: SensorEvent) {
+
         binding.tvHistoryMeasureX.text = format.format(event.values[0]).toString() //x축
         binding.tvHistoryMeasureY.text = format.format(event.values[1]).toString() //y축
         binding.tvHistoryMeasureZ.text = format.format(event.values[2]).toString() //z축
