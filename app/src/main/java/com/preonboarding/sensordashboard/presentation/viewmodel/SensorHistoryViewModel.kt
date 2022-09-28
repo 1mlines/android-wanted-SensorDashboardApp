@@ -1,5 +1,6 @@
 package com.preonboarding.sensordashboard.presentation.viewmodel
 
+import androidx.paging.PagingData
 import com.preonboarding.sensordashboard.common.base.BaseViewModel
 import com.preonboarding.sensordashboard.domain.model.SensorHistory
 import com.preonboarding.sensordashboard.domain.usecase.DeleteSensorHistoryUseCase
@@ -13,7 +14,7 @@ class SensorHistoryViewModel @Inject constructor(
     getSensorHistoryListUseCase: GetSensorHistoryListUseCase,
     private val deleteSensorHistoryUseCase: DeleteSensorHistoryUseCase,
 ) : BaseViewModel() {
-    val sensorHistoryList: Flow<List<SensorHistory>> = getSensorHistoryListUseCase()
+    val sensorHistoryList: Flow<PagingData<SensorHistory>> = getSensorHistoryListUseCase()
 
     fun deleteSensorHistory(){
 //        deleteSensorHistoryUseCase()
