@@ -11,6 +11,7 @@ buildscript {
         glideVersion = '4.13.0'
         pagingVersion = "3.1.1"
         timberVersion = '5.0.1'
+        chartVersion = "3.1.0"
     }
 
     dependencies {
