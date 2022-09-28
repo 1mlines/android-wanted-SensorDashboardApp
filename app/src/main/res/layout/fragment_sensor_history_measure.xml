@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -10,6 +11,106 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".presentation.view.sensor_history_measure.SensorHistoryMeasureFragment">
+
+        <TextView
+            android:id="@+id/historyXMeasureTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X"
+            android:textColor="@color/x_red"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toStartOf="@id/historyYMeasureTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/historyMeasureTimerTextView" />
+
+        <TextView
+            android:id="@+id/historyYMeasureTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Y"
+            android:textColor="@color/y_green"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toStartOf="@id/historyZMeasureTextView"
+            app:layout_constraintStart_toEndOf="@id/historyXMeasureTextView"
+            app:layout_constraintTop_toBottomOf="@id/historyMeasureTimerTextView" />
+
+        <TextView
+            android:id="@+id/historyZMeasureTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Z"
+            android:textColor="@color/z_blue"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/historyYMeasureTextView"
+            app:layout_constraintTop_toBottomOf="@id/historyMeasureTimerTextView" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/historyMeasureAccButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/Accelerator"
+            app:layout_constraintEnd_toStartOf="@id/historyMeasureGyroButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/historyMeasureTimerTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/historyMeasureAccButton" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/historyMeasureGyroButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/Gyroscope"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/historyMeasureAccButton"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/historyMeasureCanvasView"
+            android:layout_width="0dp"
+            android:layout_height="350dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/historyXMeasureTextView" />
+
+        <TextView
+            android:id="@+id/historyMeasureTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/measure"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/historyMeasureStopTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/historyMeasureCanvasView" />
+
+        <TextView
+            android:id="@+id/historyMeasureStopTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/stop"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/historyMeasureTextView" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
