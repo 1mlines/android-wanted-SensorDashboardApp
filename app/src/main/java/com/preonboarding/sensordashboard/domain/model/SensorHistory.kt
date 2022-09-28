@@ -5,7 +5,7 @@ data class SensorHistory(
     val type: String,
     val publishedAt: String,
     val period: Double,
-//    val xList: List<Double>,
-//    val yList: List<Double>,
-//    val zList: List<Double>,
+//    val xList: List<Float>,
+//    val yList: List<Float>,
+//    val zList: List<Float>,
 )
