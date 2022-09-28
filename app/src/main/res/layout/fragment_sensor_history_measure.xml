@@ -13,78 +13,78 @@
         tools:context=".presentation.view.sensor_history_measure.SensorHistoryMeasureFragment">
 
         <TextView
-            android:id="@+id/historyXMeasureTextView"
+            android:id="@+id/tv_history_measure_x"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="X"
-            android:textColor="@color/x_red"
+            android:textColor="@color/xRed"
             android:textSize="30sp"
-            app:layout_constraintEnd_toStartOf="@id/historyYMeasureTextView"
+            app:layout_constraintEnd_toStartOf="@id/tv_history_measure_y"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/historyMeasureTimerTextView" />
+            app:layout_constraintTop_toBottomOf="@id/tv_history_timer" />
 
         <TextView
-            android:id="@+id/historyYMeasureTextView"
+            android:id="@+id/tv_history_measure_y"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Y"
-            android:textColor="@color/y_green"
+            android:textColor="@color/yGreen"
             android:textSize="30sp"
-            app:layout_constraintEnd_toStartOf="@id/historyZMeasureTextView"
-            app:layout_constraintStart_toEndOf="@id/historyXMeasureTextView"
-            app:layout_constraintTop_toBottomOf="@id/historyMeasureTimerTextView" />
+            app:layout_constraintEnd_toStartOf="@id/tv_history_measure_z"
+            app:layout_constraintStart_toEndOf="@id/tv_history_measure_x"
+            app:layout_constraintTop_toBottomOf="@id/tv_history_timer" />
 
         <TextView
-            android:id="@+id/historyZMeasureTextView"
+            android:id="@+id/tv_history_measure_z"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Z"
-            android:textColor="@color/z_blue"
+            android:textColor="@color/zBlue"
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/historyYMeasureTextView"
-            app:layout_constraintTop_toBottomOf="@id/historyMeasureTimerTextView" />
+            app:layout_constraintStart_toEndOf="@id/tv_history_measure_y"
+            app:layout_constraintTop_toBottomOf="@id/tv_history_timer" />
 
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/historyMeasureAccButton"
+            android:id="@+id/btn_history_acc_measure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:text="@string/Accelerator"
-            app:layout_constraintEnd_toStartOf="@id/historyMeasureGyroButton"
+            app:layout_constraintEnd_toStartOf="@id/btn_history_gyro_measure"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/historyMeasureTimerTextView"
+            android:id="@+id/tv_history_timer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/historyMeasureAccButton" />
+            app:layout_constraintTop_toBottomOf="@id/btn_history_acc_measure" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/historyMeasureGyroButton"
+            android:id="@+id/btn_history_gyro_measure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:text="@string/Gyroscope"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/historyMeasureAccButton"
+            app:layout_constraintStart_toEndOf="@id/btn_history_acc_measure"
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
-            android:id="@+id/historyMeasureCanvasView"
+            android:id="@+id/view_history_measure_canvas"
             android:layout_width="0dp"
             android:layout_height="350dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/historyXMeasureTextView" />
+            app:layout_constraintTop_toBottomOf="@id/tv_history_measure_x" />
 
         <TextView
-            android:id="@+id/historyMeasureTextView"
+            android:id="@+id/tv_history_measure_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
@@ -92,13 +92,13 @@
             android:text="@string/measure"
             android:textSize="30sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/historyMeasureStopTextView"
+            app:layout_constraintBottom_toTopOf="@id/tv_history_measure_stop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/historyMeasureCanvasView" />
+            app:layout_constraintTop_toBottomOf="@id/view_history_measure_canvas" />
 
         <TextView
-            android:id="@+id/historyMeasureStopTextView"
+            android:id="@+id/tv_history_measure_stop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
@@ -109,7 +109,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/historyMeasureTextView" />
+            app:layout_constraintTop_toBottomOf="@id/tv_history_measure_start" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

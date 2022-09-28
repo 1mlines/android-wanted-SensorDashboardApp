@@ -37,64 +37,67 @@ class SensorHistoryMeasureFragment :
 
         sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
-
-        binding.historyMeasureTextView.setOnClickListener {
-            Toast.makeText(it.context, "측정 시작", Toast.LENGTH_SHORT).show()
-            binding.historyMeasureAccButton.isClickable = false
-            binding.historyMeasureGyroButton.isClickable = false
-            setTimer()
-        }
-
-        binding.historyMeasureStopTextView.setOnClickListener {
-            Toast.makeText(it.context, "측정 완료", Toast.LENGTH_SHORT).show()
-            binding.historyMeasureAccButton.isClickable = true
-            binding.historyMeasureGyroButton.isClickable = true
-            sensorHistoryMeasureViewModel.timerStop()
-            sensorManager.unregisterListener(this)
-
-        }
-
-        binding.historyMeasureAccButton.setOnClickListener {
-            sensorManager.unregisterListener(this)
-            sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-            Toast.makeText(it.context, "ACC", Toast.LENGTH_SHORT).show()
-            sensorManager.apply {
-                registerListener(
-                    this@SensorHistoryMeasureFragment,
-                    sensor,
-                    SensorManager.SENSOR_DELAY_NORMAL
-                )
-            }
-        }
-
-        binding.historyMeasureGyroButton.setOnClickListener {
-            sensorManager.unregisterListener(this)
-            sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
-            Toast.makeText(it.context, "GYRO", Toast.LENGTH_SHORT).show()
-            sensorManager.apply {
-                registerListener(
-                    this@SensorHistoryMeasureFragment,
-                    sensor,
-                    SensorManager.SENSOR_DELAY_NORMAL
-                )
-            }
-        }
-
+        initView()
 
     }
 
+    private fun initView() {
+
+
+        binding.tvHistoryMeasureStart.setOnClickListener {
+            Toast.makeText(it.context, "측정 시작", Toast.LENGTH_SHORT).show()
+            binding.btnHistoryAccMeasure.isClickable = false
+            binding.btnHistoryGyroMeasure.isClickable = false
+            setTimer()
+            sensorManager.apply {
+                registerListener(
+                    this@SensorHistoryMeasureFragment,
+                    sensor,
+                    SensorManager.SENSOR_DELAY_NORMAL
+                )
+            }
+        }
+
+        binding.tvHistoryMeasureStop.setOnClickListener {
+            Toast.makeText(it.context, "측정 완료", Toast.LENGTH_SHORT).show()
+            binding.btnHistoryAccMeasure.isClickable = true
+            binding.btnHistoryGyroMeasure.isClickable = true
+            sensorHistoryMeasureViewModel.timerStop()
+            sensorManager.unregisterListener(this)
+        }
+
+        binding.btnHistoryAccMeasure.setOnClickListener {
+            sensorManager.unregisterListener(this)
+            sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+            Toast.makeText(it.context, "ACC", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.btnHistoryGyroMeasure.setOnClickListener {
+            sensorManager.unregisterListener(this)
+            sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
+            Toast.makeText(it.context, "GYRO", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
     private fun setTimer() {
-        sensorHistoryMeasureViewModel.setInterval(100)
         var ss = 0
         var ms = 0
         val timerAction: () -> Unit = {
             if (ms == 10) {
                 ms = 0
                 ss++
+                if (ss == 60) {
+                    sensorHistoryMeasureViewModel.timerStop()
+                    sensorManager.unregisterListener(this)
+                }
             }
-            binding.historyMeasureTimerTextView.text = "${ss}:${ms++}"
-            Timber.d("현재 값 : ${xList[xList.lastIndex]},${yList[yList.lastIndex]},${zList[zList.lastIndex]}")
             //히스토리에 값 집어넣기
+            binding.tvHistoryTimer.text = "${ss}:${ms++}"
+
+            if (xList.isNotEmpty()) {
+                Timber.d("현재 값 : ${xList[xList.lastIndex]},${yList[yList.lastIndex]},${zList[zList.lastIndex]}")
+            }
 
         }
         sensorHistoryMeasureViewModel.timerStart(timerAction)
@@ -130,9 +133,9 @@ class SensorHistoryMeasureFragment :
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) = Unit
 
     private fun getSensorData(event: SensorEvent) {
-        binding.historyXMeasureTextView.text = format.format(event.values[0]).toString() //x축
-        binding.historyYMeasureTextView.text = format.format(event.values[1]).toString() //y축
-        binding.historyZMeasureTextView.text = format.format(event.values[2]).toString() //z축
+        binding.tvHistoryMeasureX.text = format.format(event.values[0]).toString() //x축
+        binding.tvHistoryMeasureY.text = format.format(event.values[1]).toString() //y축
+        binding.tvHistoryMeasureZ.text = format.format(event.values[2]).toString() //z축
 
         xList.add(format.format(event.values[0]).toFloat())
         yList.add(format.format(event.values[1]).toFloat())
