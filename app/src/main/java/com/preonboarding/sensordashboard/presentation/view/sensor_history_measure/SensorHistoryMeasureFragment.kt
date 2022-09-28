@@ -27,10 +27,10 @@ class SensorHistoryMeasureFragment :
     private var sensor: Sensor? = null
     private val sensorHistoryMeasureViewModel: SensorHistoryMeasureViewModel by viewModels()
     private val format = DecimalFormat("#.##")
-    private lateinit var history:SensorHistory
-    var xList = mutableListOf<Float>()
-    var yList = mutableListOf<Float>()
-    var zList = mutableListOf<Float>()
+    private lateinit var history: SensorHistory
+    private var xList = mutableListOf<Float>()
+    private var yList = mutableListOf<Float>()
+    private var zList = mutableListOf<Float>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,11 +43,10 @@ class SensorHistoryMeasureFragment :
             binding.historyMeasureAccButton.isClickable = false
             binding.historyMeasureGyroButton.isClickable = false
             setTimer()
-            drawGraph()
         }
 
         binding.historyMeasureStopTextView.setOnClickListener {
-            Toast.makeText(it.context, "측정 중지", Toast.LENGTH_SHORT).show()
+            Toast.makeText(it.context, "측정 완료", Toast.LENGTH_SHORT).show()
             binding.historyMeasureAccButton.isClickable = true
             binding.historyMeasureGyroButton.isClickable = true
             sensorHistoryMeasureViewModel.timerStop()
@@ -89,7 +88,7 @@ class SensorHistoryMeasureFragment :
         var ss = 0
         var ms = 0
         val timerAction: () -> Unit = {
-            if (ms==10){
+            if (ms == 10) {
                 ms = 0
                 ss++
             }
@@ -105,7 +104,11 @@ class SensorHistoryMeasureFragment :
     override fun onResume() {
         super.onResume()
         sensorManager.apply {
-            registerListener(this@SensorHistoryMeasureFragment, sensor, SensorManager.SENSOR_DELAY_NORMAL)
+            registerListener(
+                this@SensorHistoryMeasureFragment,
+                sensor,
+                SensorManager.SENSOR_DELAY_NORMAL
+            )
         }
     }
 
@@ -135,16 +138,5 @@ class SensorHistoryMeasureFragment :
         yList.add(format.format(event.values[1]).toFloat())
         zList.add(format.format(event.values[2]).toFloat())
     }
-
-    private fun drawGraph() {
-        //그래프 그리기
-
-    }
-
-    private fun saveData(history:SensorHistory) {
-        //데이터 저장
-        //히스토리 초기화
-    }
-
 
 }

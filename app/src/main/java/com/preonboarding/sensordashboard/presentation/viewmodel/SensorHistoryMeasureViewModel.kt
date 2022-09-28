@@ -15,28 +15,28 @@ class SensorHistoryMeasureViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     var isRun: Boolean = false
-    private lateinit var job : Job
-    private var interval : Long = 100
+    private lateinit var job: Job
+    private var interval: Long = 100
 
-    fun setInterval (n : Long ) {
+    fun setInterval(n: Long) {
         interval = n
     }
 
-    fun timerStart(fnCallback :() ->Unit){
+    fun timerStart(fnCallback: () -> Unit) {
         isRun = true
-        if(::job.isInitialized) job.cancel()
+        if (::job.isInitialized) job.cancel()
 
         job = viewModelScope.launch {
-            while(true) {
+            while (true) {
                 delay(interval)
                 fnCallback()
             }
         }
     }
 
-    fun timerStop(){
+    fun timerStop() {
         isRun = false
-        if(::job.isInitialized) job.cancel()
+        if (::job.isInitialized) job.cancel()
     }
 
     fun saveSensorHistory() {

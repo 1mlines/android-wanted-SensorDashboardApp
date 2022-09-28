@@ -5,7 +5,7 @@ import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
 @HiltAndroidApp
-class SensorApplication : Application(){
+class SensorApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
