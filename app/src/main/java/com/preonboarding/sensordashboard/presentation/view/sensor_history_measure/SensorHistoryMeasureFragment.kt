@@ -17,6 +17,7 @@ import com.preonboarding.sensordashboard.common.base.BaseFragment
 import com.preonboarding.sensordashboard.common.constant.Constants.X
 import com.preonboarding.sensordashboard.common.constant.Constants.Y
 import com.preonboarding.sensordashboard.common.constant.Constants.Z
+import com.preonboarding.sensordashboard.common.extension.setSelectedColor
 import com.preonboarding.sensordashboard.databinding.FragmentSensorHistoryMeasureBinding
 import com.preonboarding.sensordashboard.presentation.viewmodel.SensorHistoryMeasureViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -79,12 +80,16 @@ class SensorHistoryMeasureFragment :
             }
 
             btnHistoryAccMeasure.setOnClickListener {
+                btnHistoryAccMeasure.setSelectedColor(true)
+                btnHistoryGyroMeasure.setSelectedColor(false)
                 refreshData()
                 setSensorType(Sensor.TYPE_ACCELEROMETER)
                 Toast.makeText(it.context, "ACC", Toast.LENGTH_SHORT).show()
             }
 
             btnHistoryGyroMeasure.setOnClickListener {
+                btnHistoryGyroMeasure.setSelectedColor(true)
+                btnHistoryAccMeasure.setSelectedColor(false)
                 refreshData()
                 setSensorType(Sensor.TYPE_GYROSCOPE)
                 Toast.makeText(it.context, "GYRO", Toast.LENGTH_SHORT).show()
