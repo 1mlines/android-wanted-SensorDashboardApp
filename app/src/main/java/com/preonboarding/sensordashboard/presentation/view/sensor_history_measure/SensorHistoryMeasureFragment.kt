@@ -1,6 +1,5 @@
 package com.preonboarding.sensordashboard.presentation.view.sensor_history_measure
 
-import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -8,13 +7,20 @@ import android.hardware.SensorManager
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.github.mikephil.charting.components.Legend
 import com.preonboarding.sensordashboard.R
 import com.preonboarding.sensordashboard.common.base.BaseFragment
+import com.preonboarding.sensordashboard.common.constant.Constants.X
+import com.preonboarding.sensordashboard.common.constant.Constants.Y
+import com.preonboarding.sensordashboard.common.constant.Constants.Z
 import com.preonboarding.sensordashboard.databinding.FragmentSensorHistoryMeasureBinding
-import com.preonboarding.sensordashboard.domain.model.SensorHistory
 import com.preonboarding.sensordashboard.presentation.viewmodel.SensorHistoryMeasureViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.text.DecimalFormat
 import javax.inject.Inject
@@ -22,78 +28,115 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SensorHistoryMeasureFragment :
     BaseFragment<FragmentSensorHistoryMeasureBinding>(R.layout.fragment_sensor_history_measure) {
-    private lateinit var sensorEventListener: SensorEventListener
+    private val sensorEventListener: SensorEventListener by lazy {
+        object : SensorEventListener {
+            override fun onSensorChanged(event: SensorEvent) {
+                getSensorData(event)
+            }
+
+            override fun onAccuracyChanged(p0: Sensor?, p1: Int) {}
+        }
+    }
 
     @Inject
     lateinit var sensorManager: SensorManager
 
     private lateinit var sensor: Sensor
-    private val sensorHistoryMeasureViewModel: SensorHistoryMeasureViewModel by viewModels()
+
+    private val sensorHistoryMeasureViewModel: SensorHistoryMeasureViewModel by activityViewModels()
     private val format = DecimalFormat("#.####")
-    private lateinit var history: SensorHistory
+
     private var xList = mutableListOf<Float>()
     private var yList = mutableListOf<Float>()
     private var zList = mutableListOf<Float>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        initListener()
+        collectFlow()
         initView()
-
+        initChart()
     }
-
-    private fun initListener() {
-        sensorEventListener = object : SensorEventListener {
-            override fun onSensorChanged(event: SensorEvent) {
-                //수정?
-                when (event.sensor.type) {
-                    Sensor.TYPE_ACCELEROMETER -> getSensorData(event)
-                    Sensor.TYPE_GYROSCOPE -> getSensorData(event)
-                }
-            }
-
-            override fun onAccuracyChanged(p0: Sensor?, p1: Int) {}
-
-        }
-    }
-
 
     private fun registerSensorListener(listener: SensorEventListener, sensor: Sensor) {
         sensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_NORMAL)
     }
 
-
     private fun initView() {
-        //저장btn
-
         binding.apply {
+            vm = sensorHistoryMeasureViewModel
             tvHistoryMeasureStart.setOnClickListener {
                 Toast.makeText(it.context, "측정 시작", Toast.LENGTH_SHORT).show()
                 setMeasureButtonClickable(false)
+                registerSensorListener(sensorEventListener, sensor)
                 setTimer()
             }
 
             tvHistoryMeasureStop.setOnClickListener {
                 Toast.makeText(it.context, "측정 중지", Toast.LENGTH_SHORT).show()
                 setMeasureButtonClickable(true)
+                sensorManager.unregisterListener(sensorEventListener)
                 sensorHistoryMeasureViewModel.timerStop()
             }
 
             btnHistoryAccMeasure.setOnClickListener {
-                setSensorListener(Sensor.TYPE_ACCELEROMETER)
+                refreshData()
+                setSensorType(Sensor.TYPE_ACCELEROMETER)
                 Toast.makeText(it.context, "ACC", Toast.LENGTH_SHORT).show()
             }
 
             btnHistoryGyroMeasure.setOnClickListener {
-                setSensorListener(Sensor.TYPE_GYROSCOPE)
+                refreshData()
+                setSensorType(Sensor.TYPE_GYROSCOPE)
                 Toast.makeText(it.context, "GYRO", Toast.LENGTH_SHORT).show()
             }
-
         }
+    }
 
+    private fun initChart() {
+        // TODO 차트 세팅 필요 정호님에게 맡기겠습니다
+        binding.chartView.apply {
+            xAxis.apply {
+                axisMaximum = 600f
+                granularity = 1f
+                isGranularityEnabled = true
+            }
+            axisRight.isEnabled = false
+            axisLeft.apply {
+                axisMaximum = 25f
+                axisMinimum = -25f
+            }
+            legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+        }
+        //
+        sensorHistoryMeasureViewModel.initLineData()
+        binding.chartView.data = sensorHistoryMeasureViewModel.lineData
+    }
 
+    private fun collectFlow() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                sensorHistoryMeasureViewModel.currentMeasureValue.collect() { measureValue ->
+                    sensorHistoryMeasureViewModel.addEntry(
+                        measureValue.x,
+                        measureValue.y,
+                        measureValue.z
+                    )
+                    binding.chartView.apply {
+                        notifyDataSetChanged()
+                        invalidate()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun refreshData() {
+        binding.chartView.apply {
+            data.clearValues()
+            invalidate()
+        }
+        sensorHistoryMeasureViewModel.initLineData()
+        binding.chartView.data = sensorHistoryMeasureViewModel.lineData
     }
 
     private fun setMeasureButtonClickable(state: Boolean) {
@@ -103,10 +146,9 @@ class SensorHistoryMeasureFragment :
         }
     }
 
-    private fun setSensorListener(sensorType: Int) {
+    private fun setSensorType(sensorType: Int) {
         sensorManager.unregisterListener(sensorEventListener)
         sensor = sensorManager.getDefaultSensor(sensorType)
-        registerSensorListener(sensorEventListener, sensor)
     }
 
     private fun setTimer() {
@@ -132,16 +174,20 @@ class SensorHistoryMeasureFragment :
         sensorHistoryMeasureViewModel.timerStart(timerAction)
     }
 
-
     private fun getSensorData(event: SensorEvent) {
-
-        binding.tvHistoryMeasureX.text = format.format(event.values[0]).toString() //x축
-        binding.tvHistoryMeasureY.text = format.format(event.values[1]).toString() //y축
-        binding.tvHistoryMeasureZ.text = format.format(event.values[2]).toString() //z축
+        sensorHistoryMeasureViewModel.updateCurrentMeasureValue(
+            event.values[X],
+            event.values[Y],
+            event.values[Z]
+        )
 
         xList.add(format.format(event.values[0]).toFloat())
         yList.add(format.format(event.values[1]).toFloat())
         zList.add(format.format(event.values[2]).toFloat())
     }
 
+    override fun onStop() {
+        sensorManager.unregisterListener(sensorEventListener)
+        super.onStop()
+    }
 }
