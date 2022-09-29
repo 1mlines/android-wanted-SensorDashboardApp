@@ -5,10 +5,8 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
-import android.service.autofill.Validators.or
 import android.view.View
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -30,10 +28,8 @@ import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 
-//TODO 뒤로가기후 다시 진입했을때 그래프 중복
 @AndroidEntryPoint
 class SensorHistoryMeasureFragment :
     BaseFragment<FragmentSensorHistoryMeasureBinding>(R.layout.fragment_sensor_history_measure) {
@@ -77,26 +73,18 @@ class SensorHistoryMeasureFragment :
     }
 
 
-
     private fun registerSensorListener(listener: SensorEventListener, sensor: Sensor) {
         sensorManager.registerListener(listener, sensor, 100000)
     }
 
-
-    //TODO 센서 클릭시 그래프 작동 오류
     private fun initView() {
         binding.apply {
             vm = sensorHistoryMeasureViewModel
 
-            ivBack.setOnClickListener {
-                //OnBackPressed()
-            }
-
             tvMenu.setOnClickListener {
-                if(xList.isNullOrEmpty()){
+                if (xList.isNullOrEmpty()) {
                     Toast.makeText(it.context, "데이터가 없습니다.", Toast.LENGTH_SHORT).show()
-                }
-                else{
+                } else {
                     Toast.makeText(it.context, "저장 완료", Toast.LENGTH_SHORT).show()
                     val period = binding.tvHistoryTimer.text
                     sensorHistoryMeasureViewModel.timerStop()
@@ -120,11 +108,15 @@ class SensorHistoryMeasureFragment :
             }
 
             tvHistoryMeasureStart.setOnClickListener {
-                Toast.makeText(it.context, "측정 시작", Toast.LENGTH_SHORT).show()
-                setMeasureButtonClickable(false)
-                registerSensorListener(sensorEventListener, sensor)
-                setTimer()
-                tvHistoryMeasureStop.isClickable=true
+                if (::sensor.isInitialized) {
+                    Toast.makeText(requireContext(), "측정 시작", Toast.LENGTH_SHORT).show()
+                    setMeasureButtonClickable(false)
+                    registerSensorListener(sensorEventListener, sensor)
+                    setTimer()
+                    tvHistoryMeasureStop.isClickable = true
+                } else {
+                    Toast.makeText(requireContext(), "센서를 선택해 주세요", Toast.LENGTH_SHORT).show()
+                }
             }
 
 
@@ -140,7 +132,6 @@ class SensorHistoryMeasureFragment :
                 btnHistoryGyroMeasure.setSelectedColor(false)
                 refreshData()
                 setSensorType(Sensor.TYPE_ACCELEROMETER)
-                Toast.makeText(it.context, "ACC", Toast.LENGTH_SHORT).show()
             }
 
             btnHistoryGyroMeasure.setOnClickListener {
@@ -148,7 +139,6 @@ class SensorHistoryMeasureFragment :
                 btnHistoryAccMeasure.setSelectedColor(false)
                 refreshData()
                 setSensorType(Sensor.TYPE_GYROSCOPE)
-                Toast.makeText(it.context, "GYRO", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -184,10 +174,10 @@ class SensorHistoryMeasureFragment :
                     binding.chartView.apply {
                         notifyDataSetChanged()
                         invalidate()
-                       if ( data.dataSets[X].xMax == 600.0f){
-                           sensorManager.unregisterListener(sensorEventListener)
-                           sensorHistoryMeasureViewModel.timerStop()
-                       }
+                        if (data.dataSets[X].xMax == 600.0f) {
+                            sensorManager.unregisterListener(sensorEventListener)
+                            sensorHistoryMeasureViewModel.timerStop()
+                        }
 
                     }
                 }
@@ -214,7 +204,6 @@ class SensorHistoryMeasureFragment :
     private fun setSensorType(sensorType: Int) {
         sensorManager.unregisterListener(sensorEventListener)
         sensor = sensorManager.getDefaultSensor(sensorType)
-        registerSensorListener(sensorEventListener, sensor)
     }
 
     private fun setTimer() {
