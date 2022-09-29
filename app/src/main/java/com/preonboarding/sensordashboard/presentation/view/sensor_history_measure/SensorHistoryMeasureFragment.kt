@@ -5,6 +5,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.service.autofill.Validators.or
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
@@ -27,7 +28,10 @@ import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
+
+//TODO 뒤로가기후 다시 진입했을때 그래프 중복
 @AndroidEntryPoint
 class SensorHistoryMeasureFragment :
     BaseFragment<FragmentSensorHistoryMeasureBinding>(R.layout.fragment_sensor_history_measure) {
@@ -61,6 +65,7 @@ class SensorHistoryMeasureFragment :
     private var xList = mutableListOf<Float>()
     private var yList = mutableListOf<Float>()
     private var zList = mutableListOf<Float>()
+    private var measureFlag = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -75,28 +80,37 @@ class SensorHistoryMeasureFragment :
         sensorManager.registerListener(listener, sensor, 100000)
     }
 
+
+    //TODO 센서 클릭시 그래프 작동 오류
     private fun initView() {
         binding.apply {
             vm = sensorHistoryMeasureViewModel
 
-            //값이 없을 경우 데이터가 없다는 알림을 띄웁니다.
             tvMenu.setOnClickListener {
-                Toast.makeText(it.context, "저장 완료", Toast.LENGTH_SHORT).show()
-                val period = binding.tvHistoryTimer.text
-                sensorHistoryMeasureViewModel.timerStop()
-                history = SensorHistory(
-                    0,
-                    sensorType,
-                    dateFormat.format(Date(System.currentTimeMillis())),
-                    period.toString(),
-                    xList.toList(),
-                    yList.toList(),
-                    zList.toList()
-                )
-                sensorHistoryMeasureViewModel.saveSensorHistory(history)
-                Timber.d("history : $history")
-                sensorManager.unregisterListener(sensorEventListener)
+                if(xList.isNullOrEmpty()){
+                    Toast.makeText(it.context, "데이터가 없습니다.", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    Toast.makeText(it.context, "저장 완료", Toast.LENGTH_SHORT).show()
+                    val period = binding.tvHistoryTimer.text
+                    sensorHistoryMeasureViewModel.timerStop()
+                    history = SensorHistory(
+                        0,
+                        sensorType,
+                        dateFormat.format(Date(System.currentTimeMillis())),
+                        period.toString(),
+                        xList.toList(),
+                        yList.toList(),
+                        zList.toList()
+                    )
+                    sensorHistoryMeasureViewModel.saveSensorHistory(history)
+                    Timber.d("history : $history")
+                    sensorManager.unregisterListener(sensorEventListener)
+                    xList.clear()
+                    yList.clear()
+                    zList.clear()
 
+                }
             }
 
             tvHistoryMeasureStart.setOnClickListener {
@@ -104,10 +118,10 @@ class SensorHistoryMeasureFragment :
                 setMeasureButtonClickable(false)
                 registerSensorListener(sensorEventListener, sensor)
                 setTimer()
+                tvHistoryMeasureStop.isClickable=true
             }
 
 
-            //다시 측정하는 경우 기존의 값들을 초기화합니다.
             tvHistoryMeasureStop.setOnClickListener {
                 Toast.makeText(it.context, "측정 중지", Toast.LENGTH_SHORT).show()
                 setMeasureButtonClickable(true)
@@ -115,7 +129,6 @@ class SensorHistoryMeasureFragment :
                 sensorHistoryMeasureViewModel.timerStop()
             }
 
-            //측정 중에는 변경할 수 없습니다.
             btnHistoryAccMeasure.setOnClickListener {
                 refreshData()
                 setSensorType(Sensor.TYPE_ACCELEROMETER)
@@ -134,7 +147,7 @@ class SensorHistoryMeasureFragment :
         // TODO 차트 세팅 필요 정호님에게 맡기겠습니다
         binding.chartView.apply {
             xAxis.apply {
-                axisMaximum = 600f
+                axisMaximum = 600.0f
                 granularity = 1f
                 isGranularityEnabled = true
             }
@@ -154,13 +167,18 @@ class SensorHistoryMeasureFragment :
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 sensorHistoryMeasureViewModel.currentMeasureValue.collect() { measureValue ->
                     sensorHistoryMeasureViewModel.addEntry(
-                        format.format(measureValue.x).toFloat(),
-                        format.format(measureValue.y).toFloat(),
-                        format.format(measureValue.z).toFloat()
+                        measureValue.x,
+                        measureValue.y,
+                        measureValue.z
                     )
                     binding.chartView.apply {
                         notifyDataSetChanged()
                         invalidate()
+                       if ( data.dataSets[X].xMax == 600.0f){
+                           sensorManager.unregisterListener(sensorEventListener)
+                           sensorHistoryMeasureViewModel.timerStop()
+                       }
+
                     }
                 }
             }
@@ -196,7 +214,8 @@ class SensorHistoryMeasureFragment :
             if (ms == 10) {
                 ms = 0
                 ss++
-                if (ss == 60) {
+
+                if ((ss == 60)) {
                     sensorHistoryMeasureViewModel.timerStop()
                     sensorManager.unregisterListener(sensorEventListener)
                 }
@@ -228,4 +247,5 @@ class SensorHistoryMeasureFragment :
         sensorManager.unregisterListener(sensorEventListener)
         super.onStop()
     }
+
 }
