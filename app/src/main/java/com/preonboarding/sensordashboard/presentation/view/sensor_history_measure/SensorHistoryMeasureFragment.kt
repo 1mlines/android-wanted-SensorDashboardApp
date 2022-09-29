@@ -7,7 +7,7 @@ import android.hardware.SensorManager
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -55,7 +55,7 @@ class SensorHistoryMeasureFragment :
     @Inject
     lateinit var sensorManager: SensorManager
     private lateinit var sensor: Sensor
-    private val sensorHistoryMeasureViewModel: SensorHistoryMeasureViewModel by activityViewModels()
+    private val sensorHistoryMeasureViewModel: SensorHistoryMeasureViewModel by viewModels()
     private val format = DecimalFormat("#.####")
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
     private lateinit var history: SensorHistory
@@ -63,7 +63,6 @@ class SensorHistoryMeasureFragment :
     private var xList = mutableListOf<Float>()
     private var yList = mutableListOf<Float>()
     private var zList = mutableListOf<Float>()
-    private var measureFlag = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -190,6 +189,9 @@ class SensorHistoryMeasureFragment :
             data.clearValues()
             invalidate()
         }
+        xList.clear()
+        yList.clear()
+        zList.clear()
         sensorHistoryMeasureViewModel.initLineData()
         binding.chartView.data = sensorHistoryMeasureViewModel.lineData
     }
@@ -237,9 +239,9 @@ class SensorHistoryMeasureFragment :
             event.values[Z]
         )
 
-        xList.add(format.format(event.values[0]).toFloat())
-        yList.add(format.format(event.values[1]).toFloat())
-        zList.add(format.format(event.values[2]).toFloat())
+        xList.add(event.values[0])
+        yList.add(event.values[1])
+        zList.add(event.values[2])
     }
 
     override fun onStop() {
