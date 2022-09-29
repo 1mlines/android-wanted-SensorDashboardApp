@@ -4,6 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <variable
+            name="viewmodel"
+            type="com.preonboarding.sensordashboard.presentation.viewmodel.SensorHistoryViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
