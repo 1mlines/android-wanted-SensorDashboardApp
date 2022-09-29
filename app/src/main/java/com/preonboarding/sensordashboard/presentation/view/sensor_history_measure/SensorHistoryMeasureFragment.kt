@@ -188,6 +188,8 @@ class SensorHistoryMeasureFragment :
 
     override fun onStop() {
         sensorManager.unregisterListener(sensorEventListener)
+        sensorHistoryMeasureViewModel.timerStop()
+        sensorHistoryMeasureViewModel.refreshCurrentMeasureValue()
         super.onStop()
     }
 }

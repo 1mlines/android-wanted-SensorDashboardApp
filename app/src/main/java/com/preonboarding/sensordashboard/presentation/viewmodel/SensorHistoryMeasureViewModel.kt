@@ -42,6 +42,7 @@ class SensorHistoryMeasureViewModel @Inject constructor(
         xEntries = arrayListOf(Entry(0f, 0f))
         yEntries = arrayListOf(Entry(0f, 0f))
         zEntries = arrayListOf(Entry(0f, 0f))
+        lineDataSet.clear()
         lineDataSet.apply {
             add(getLineDataSet(xEntries, "x", Color.RED))
             add(getLineDataSet(yEntries, "y", Color.GREEN))
@@ -85,8 +86,13 @@ class SensorHistoryMeasureViewModel @Inject constructor(
         }
     }
 
+    fun refreshCurrentMeasureValue() {
+        _currentMeasureValue.value = MeasureValue()
+    }
+
+
     // 선택된 히스토리 데이터 초기화용
-    fun setLineData(){
+    fun setLineData() {
         initLineData()
         //TODO Item 넘겨받아 뷰모델 lineData 세팅 필요
     }
