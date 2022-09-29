@@ -58,7 +58,7 @@ class SensorHistoryMeasureFragment :
     }
 
     private fun registerSensorListener(listener: SensorEventListener, sensor: Sensor) {
-        sensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_FASTEST)
+        sensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_NORMAL)
     }
 
     private fun initView() {
@@ -96,7 +96,7 @@ class SensorHistoryMeasureFragment :
         // TODO 차트 세팅 필요 정호님에게 맡기겠습니다
         binding.chartView.apply {
             xAxis.apply {
-                axisMaximum = 300f
+                axisMaximum = 600f
                 granularity = 1f
                 isGranularityEnabled = true
             }
