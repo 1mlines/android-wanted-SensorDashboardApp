@@ -12,17 +12,20 @@ data class SensorHistoryEntity(
     val type: String,
     @ColumnInfo(defaultValue = "CURRENT_TIMESTAMP")
     val publishedAt: String,
-    val period: Double,
-//    val xList: List<Double>,
-//    val yList: List<Double>,
-//    val zList: List<Double>,
+    val period: String, //double
+    val xList: List<Float>,
+    val yList: List<Float>,
+    val zList: List<Float>
 ) {
     fun toModel(): SensorHistory {
         return SensorHistory(
             id = id,
             type = type,
             publishedAt = publishedAt,
-            period = period
+            period = period,
+            xList =xList,
+            yList =yList,
+            zList =zList
         )
     }
 }
@@ -32,6 +35,9 @@ fun SensorHistory.toEntity(): SensorHistoryEntity{
         id = id,
         type = type,
         publishedAt = publishedAt,
-        period = period
+        period = period,
+        xList=xList,
+        yList=yList,
+        zList=zList
     )
 }

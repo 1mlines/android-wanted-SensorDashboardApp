@@ -18,11 +18,14 @@ import com.preonboarding.sensordashboard.common.constant.Constants.X
 import com.preonboarding.sensordashboard.common.constant.Constants.Y
 import com.preonboarding.sensordashboard.common.constant.Constants.Z
 import com.preonboarding.sensordashboard.databinding.FragmentSensorHistoryMeasureBinding
+import com.preonboarding.sensordashboard.domain.model.SensorHistory
 import com.preonboarding.sensordashboard.presentation.viewmodel.SensorHistoryMeasureViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -31,7 +34,16 @@ class SensorHistoryMeasureFragment :
     private val sensorEventListener: SensorEventListener by lazy {
         object : SensorEventListener {
             override fun onSensorChanged(event: SensorEvent) {
-                getSensorData(event)
+                when (event.sensor.type) {
+                    Sensor.TYPE_ACCELEROMETER -> {
+                        getSensorData(event)
+                        sensorType = "ACCELEROMETER"
+                    }
+                    Sensor.TYPE_GYROSCOPE -> {
+                        getSensorData(event)
+                        sensorType = "GYROSCOPE"
+                    }
+                }
             }
 
             override fun onAccuracyChanged(p0: Sensor?, p1: Int) {}
@@ -40,12 +52,12 @@ class SensorHistoryMeasureFragment :
 
     @Inject
     lateinit var sensorManager: SensorManager
-
     private lateinit var sensor: Sensor
-
     private val sensorHistoryMeasureViewModel: SensorHistoryMeasureViewModel by activityViewModels()
     private val format = DecimalFormat("#.####")
-
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+    private lateinit var history: SensorHistory
+    private lateinit var sensorType: String
     private var xList = mutableListOf<Float>()
     private var yList = mutableListOf<Float>()
     private var zList = mutableListOf<Float>()
@@ -57,13 +69,36 @@ class SensorHistoryMeasureFragment :
         initChart()
     }
 
+
+
     private fun registerSensorListener(listener: SensorEventListener, sensor: Sensor) {
-        sensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_NORMAL)
+        sensorManager.registerListener(listener, sensor, 100000)
     }
 
     private fun initView() {
         binding.apply {
             vm = sensorHistoryMeasureViewModel
+
+            //값이 없을 경우 데이터가 없다는 알림을 띄웁니다.
+            tvMenu.setOnClickListener {
+                Toast.makeText(it.context, "저장 완료", Toast.LENGTH_SHORT).show()
+                val period = binding.tvHistoryTimer.text
+                sensorHistoryMeasureViewModel.timerStop()
+                history = SensorHistory(
+                    0,
+                    sensorType,
+                    dateFormat.format(Date(System.currentTimeMillis())),
+                    period.toString(),
+                    xList.toList(),
+                    yList.toList(),
+                    zList.toList()
+                )
+                sensorHistoryMeasureViewModel.saveSensorHistory(history)
+                Timber.d("history : $history")
+                sensorManager.unregisterListener(sensorEventListener)
+
+            }
+
             tvHistoryMeasureStart.setOnClickListener {
                 Toast.makeText(it.context, "측정 시작", Toast.LENGTH_SHORT).show()
                 setMeasureButtonClickable(false)
@@ -71,6 +106,8 @@ class SensorHistoryMeasureFragment :
                 setTimer()
             }
 
+
+            //다시 측정하는 경우 기존의 값들을 초기화합니다.
             tvHistoryMeasureStop.setOnClickListener {
                 Toast.makeText(it.context, "측정 중지", Toast.LENGTH_SHORT).show()
                 setMeasureButtonClickable(true)
@@ -78,6 +115,7 @@ class SensorHistoryMeasureFragment :
                 sensorHistoryMeasureViewModel.timerStop()
             }
 
+            //측정 중에는 변경할 수 없습니다.
             btnHistoryAccMeasure.setOnClickListener {
                 refreshData()
                 setSensorType(Sensor.TYPE_ACCELEROMETER)
@@ -107,7 +145,6 @@ class SensorHistoryMeasureFragment :
             }
             legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
         }
-        //
         sensorHistoryMeasureViewModel.initLineData()
         binding.chartView.data = sensorHistoryMeasureViewModel.lineData
     }
@@ -117,9 +154,9 @@ class SensorHistoryMeasureFragment :
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 sensorHistoryMeasureViewModel.currentMeasureValue.collect() { measureValue ->
                     sensorHistoryMeasureViewModel.addEntry(
-                        measureValue.x,
-                        measureValue.y,
-                        measureValue.z
+                        format.format(measureValue.x).toFloat(),
+                        format.format(measureValue.y).toFloat(),
+                        format.format(measureValue.z).toFloat()
                     )
                     binding.chartView.apply {
                         notifyDataSetChanged()
@@ -149,6 +186,7 @@ class SensorHistoryMeasureFragment :
     private fun setSensorType(sensorType: Int) {
         sensorManager.unregisterListener(sensorEventListener)
         sensor = sensorManager.getDefaultSensor(sensorType)
+        registerSensorListener(sensorEventListener, sensor)
     }
 
     private fun setTimer() {
@@ -160,11 +198,11 @@ class SensorHistoryMeasureFragment :
                 ss++
                 if (ss == 60) {
                     sensorHistoryMeasureViewModel.timerStop()
+                    sensorManager.unregisterListener(sensorEventListener)
                 }
             }
-            //히스토리에 값 집어넣기
 
-            binding.tvHistoryTimer.text = "${ss}:${ms++}"
+            binding.tvHistoryTimer.text = "${ss}.${ms++}"
 
             if (xList.isNotEmpty()) {
                 Timber.d("현재 값 : ${xList[xList.lastIndex]},${yList[yList.lastIndex]},${zList[zList.lastIndex]}")
