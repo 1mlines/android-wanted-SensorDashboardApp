@@ -19,9 +19,9 @@
             android:id="@+id/cl_main"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/iv_back"
@@ -30,33 +30,33 @@
                 android:contentDescription="@string/back"
                 android:paddingHorizontal="12dp"
                 android:src="@drawable/ic_arrow_back_24"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:navigateUp="@{null}" />
 
             <TextView
-                style="@style/ToolbarTitle"
                 android:id="@+id/tv_title"
+                style="@style/ToolbarTitle"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:gravity="center"
                 android:text="@string/do_measure"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                style="@style/ToolbarMenu"
                 android:id="@+id/tv_menu"
+                style="@style/ToolbarMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:paddingHorizontal="12dp"
                 android:text="@string/save"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -65,71 +65,74 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Accelerator"
-            app:layout_constraintTop_toBottomOf="@id/cl_main"
+            app:layout_constraintEnd_toStartOf="@id/btn_history_gyro_measure"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btn_history_gyro_measure" />
+            app:layout_constraintTop_toBottomOf="@id/cl_main" />
 
         <TextView
             android:id="@+id/tv_history_timer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="30sp"
-            app:layout_constraintTop_toBottomOf="@id/cl_main"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/cl_main" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_history_gyro_measure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Gyroscope"
-            app:layout_constraintTop_toBottomOf="@id/cl_main"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_history_acc_measure"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/cl_main" />
 
         <TextView
             android:id="@+id/tv_history_measure_x"
+            bindValue="@{vm.currentMeasureValue.x}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/x"
             android:textColor="@color/xRed"
             android:textSize="30sp"
-            app:layout_constraintTop_toBottomOf="@id/tv_history_timer"
+            app:layout_constraintEnd_toStartOf="@id/tv_history_measure_y"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tv_history_measure_y" />
+            app:layout_constraintTop_toBottomOf="@id/tv_history_timer"
+            tools:text="@string/x" />
 
         <TextView
             android:id="@+id/tv_history_measure_y"
+            bindValue="@{vm.currentMeasureValue.x}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/y"
             android:textColor="@color/yGreen"
             android:textSize="30sp"
-            app:layout_constraintTop_toTopOf="@id/tv_history_measure_x"
-            app:layout_constraintStart_toEndOf="@id/tv_history_measure_x"
+            app:layout_constraintBottom_toBottomOf="@id/tv_history_measure_x"
             app:layout_constraintEnd_toStartOf="@id/tv_history_measure_z"
-            app:layout_constraintBottom_toBottomOf="@id/tv_history_measure_x" />
+            app:layout_constraintStart_toEndOf="@id/tv_history_measure_x"
+            app:layout_constraintTop_toTopOf="@id/tv_history_measure_x"
+            tools:text="@string/y" />
 
         <TextView
             android:id="@+id/tv_history_measure_z"
+            bindValue="@{vm.currentMeasureValue.x}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/z"
             android:textColor="@color/zBlue"
             android:textSize="30sp"
-            app:layout_constraintTop_toTopOf="@id/tv_history_measure_x"
-            app:layout_constraintStart_toEndOf="@id/tv_history_measure_y"
+            app:layout_constraintBottom_toBottomOf="@id/tv_history_measure_x"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/tv_history_measure_x" />
+            app:layout_constraintStart_toEndOf="@id/tv_history_measure_y"
+            app:layout_constraintTop_toTopOf="@id/tv_history_measure_x"
+            tools:text="@string/z" />
 
-        <View
-            android:id="@+id/view_history_measure_canvas"
-            android:layout_width="0dp"
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart_view"
+            android:layout_width="match_parent"
             android:layout_height="350dp"
-            app:layout_constraintTop_toBottomOf="@id/tv_history_measure_x"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/tv_history_measure_x" />
 
         <TextView
             android:id="@+id/tv_history_measure_start"
@@ -140,10 +143,10 @@
             android:text="@string/measure"
             android:textSize="30sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/view_history_measure_canvas"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tv_history_measure_stop"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/tv_history_measure_stop" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chart_view" />
 
         <TextView
             android:id="@+id/tv_history_measure_stop"
@@ -154,10 +157,10 @@
             android:text="@string/measure_stop"
             android:textSize="30sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/tv_history_measure_start"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_history_measure_start" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

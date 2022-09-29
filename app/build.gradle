@@ -34,8 +34,8 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures{
-         dataBinding = true
+    buildFeatures {
+        dataBinding = true
     }
 }
 
@@ -77,4 +77,7 @@ dependencies {
 
     // Timber
     implementation "com.jakewharton.timber:timber:$timberVersion"
+
+    // MPAndroidChart
+    implementation "com.github.PhilJay:MPAndroidChart:v$chartVersion"
 }
