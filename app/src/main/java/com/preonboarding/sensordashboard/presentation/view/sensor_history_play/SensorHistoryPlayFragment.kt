@@ -16,5 +16,6 @@ class SensorHistoryPlayFragment : BaseFragment<FragmentSensorHistoryPlayBinding>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.vm = sensorHistoryViewModel
     }
 }
