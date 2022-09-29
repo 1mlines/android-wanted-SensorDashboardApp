@@ -9,6 +9,7 @@ import com.preonboarding.sensordashboard.domain.usecase.DeleteSensorHistoryUseCa
 import com.preonboarding.sensordashboard.domain.usecase.GetSensorHistoryListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,7 +19,9 @@ class SensorHistoryViewModel @Inject constructor(
 ) : BaseViewModel() {
     val sensorHistoryList: Flow<PagingData<SensorHistory>> = getSensorHistoryListUseCase().cachedIn(viewModelScope)
 
-    fun deleteSensorHistory(){
-//        deleteSensorHistoryUseCase()
+    fun deleteSensorHistory(sensorHistory: SensorHistory){
+        viewModelScope.launch {
+            deleteSensorHistoryUseCase(sensorHistory)
+        }
     }
 }

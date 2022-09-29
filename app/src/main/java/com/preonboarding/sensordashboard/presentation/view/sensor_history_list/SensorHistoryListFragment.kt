@@ -3,16 +3,15 @@ package com.preonboarding.sensordashboard.presentation.view.sensor_history_list
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
+import androidx.lifecycle.repeatOnLifecycle
 import com.preonboarding.sensordashboard.R
 import com.preonboarding.sensordashboard.common.base.BaseFragment
 import com.preonboarding.sensordashboard.databinding.FragmentSensorHistoryListBinding
 import com.preonboarding.sensordashboard.presentation.viewmodel.SensorHistoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChangedBy
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -30,23 +29,19 @@ class SensorHistoryListFragment :
             viewmodel = sensorHistoryViewModel
         }
         initAdapter()
+        initViewmodel()
     }
 
     private fun initAdapter() {
         binding.historyListRv.adapter = adapter
-        initViewmodel()
     }
 
     private fun initViewmodel() {
         lifecycleScope.launch {
-            adapter.loadStateFlow
-                .distinctUntilChangedBy { it.refresh }
-                .filter { it.refresh is LoadState.NotLoading }
-                .collect { binding.historyListRv.scrollToPosition(0) }
-        }
-        lifecycleScope.launch {
-            sensorHistoryViewModel.sensorHistoryList.collectLatest {
-                adapter.submitData(it)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                sensorHistoryViewModel.sensorHistoryList.collectLatest {
+                    adapter.submitData(it)
+                }
             }
         }
     }

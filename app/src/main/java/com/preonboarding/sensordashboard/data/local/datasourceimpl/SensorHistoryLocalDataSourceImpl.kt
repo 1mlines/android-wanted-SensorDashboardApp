@@ -20,6 +20,6 @@ class SensorHistoryLocalDataSourceImpl @Inject constructor(
         sensorHistoryDao.deleteSensorHistory(sensorHistory)
     }
 
-    override fun getSensorDataList(): List<SensorHistoryEntity> =
-        sensorHistoryDao.getSensorDataList(page = 1, loadSize = 5)
+    override suspend fun getSensorDataList(): List<SensorHistoryEntity> =
+        sensorHistoryDao.getSensorDataList()
 }

@@ -12,14 +12,11 @@ class HistoryPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, SensorHistoryEntity> {
         val page = params.key ?: 1
         return try {
-            val items = dao.getSensorDataList(
-                page,
-                params.loadSize
-            )
+            val items = dao.getSensorDataList()
             LoadResult.Page(
                 data = items,
                 prevKey = if (page == 1) null else page - 1,
-                nextKey = if (items.isEmpty()) null else page + (params.loadSize / 5)
+                nextKey = if (items.isEmpty()) null else page + 1
             )
         } catch (e: Exception) {
             return LoadResult.Error(e)
