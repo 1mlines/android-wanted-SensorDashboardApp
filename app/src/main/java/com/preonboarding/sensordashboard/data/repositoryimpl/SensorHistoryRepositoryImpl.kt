@@ -9,7 +9,7 @@ import com.preonboarding.sensordashboard.data.local.datasource.SensorHistoryLoca
 import com.preonboarding.sensordashboard.data.local.entity.toEntity
 import com.preonboarding.sensordashboard.domain.model.SensorHistory
 import com.preonboarding.sensordashboard.domain.repository.SensorHistoryRepository
-import com.preonboarding.sensordashboard.presentation.view.sensor_history_list.HistoryPagingSource
+import com.preonboarding.sensordashboard.data.paging.HistoryPagingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package com.preonboarding.sensordashboard.presentation.view.sensor_history_list
+package com.preonboarding.sensordashboard.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -7,7 +7,7 @@ import com.preonboarding.sensordashboard.data.local.entity.SensorHistoryEntity
 
 class HistoryPagingSource(
     private val dao: SensorHistoryDao
-    ): PagingSource<Int, SensorHistoryEntity>() {
+) : PagingSource<Int, SensorHistoryEntity>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, SensorHistoryEntity> {
         val page = params.key ?: 1

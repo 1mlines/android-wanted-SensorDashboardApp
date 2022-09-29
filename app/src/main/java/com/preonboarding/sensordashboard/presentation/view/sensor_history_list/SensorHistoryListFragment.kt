@@ -26,7 +26,6 @@ class SensorHistoryListFragment :
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
             viewmodel = sensorHistoryViewModel
-            lifecycleOwner = this@SensorHistoryListFragment
         }
         initAdapter()
     }
