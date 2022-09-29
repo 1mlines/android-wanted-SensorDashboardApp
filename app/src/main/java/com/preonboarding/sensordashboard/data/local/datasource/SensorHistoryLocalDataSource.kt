@@ -7,4 +7,5 @@ interface SensorHistoryLocalDataSource {
     fun getSensorHistoryList(): Flow<List<SensorHistoryEntity>>
     suspend fun saveSensorHistory(sensorHistory: SensorHistoryEntity)
     suspend fun deleteSensorHistory(sensorHistory: SensorHistoryEntity)
+    fun getSensorDataList(): List<SensorHistoryEntity>
 }
