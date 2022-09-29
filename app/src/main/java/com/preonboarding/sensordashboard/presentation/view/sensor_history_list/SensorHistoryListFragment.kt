@@ -16,5 +16,6 @@ class SensorHistoryListFragment : BaseFragment<FragmentSensorHistoryListBinding>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.vm = sensorHistoryViewModel
     }
 }
