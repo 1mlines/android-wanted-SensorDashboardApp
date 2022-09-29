@@ -8,12 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.preonboarding.sensordashboard.databinding.ItemHistoryRvBinding
 import com.preonboarding.sensordashboard.domain.model.SensorHistory
 
-class HistoryPagingAdapter:
+class HistoryPagingAdapter :
     PagingDataAdapter<SensorHistory, HistoryPagingAdapter.ViewHolder>(diffCallback) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         getItem(position)?.let {
-            holder.bind(it) }
+            holder.bind(it)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,24 +25,28 @@ class HistoryPagingAdapter:
         )
     }
 
-    inner class ViewHolder(
+    class ViewHolder(
         private val binding: ItemHistoryRvBinding
-    ): RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: SensorHistory) {
             with(binding) {
                 data = item
+                executePendingBindings()
             }
         }
     }
 
     companion object {
-        private val diffCallback = object: DiffUtil.ItemCallback<SensorHistory>() {
+        private val diffCallback = object : DiffUtil.ItemCallback<SensorHistory>() {
             override fun areItemsTheSame(oldItem: SensorHistory, newItem: SensorHistory): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: SensorHistory, newItem: SensorHistory): Boolean {
+            override fun areContentsTheSame(
+                oldItem: SensorHistory,
+                newItem: SensorHistory
+            ): Boolean {
                 return oldItem == newItem
             }
         }

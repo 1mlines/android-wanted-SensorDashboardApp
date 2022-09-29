@@ -16,7 +16,8 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SensorHistoryListFragment : BaseFragment<FragmentSensorHistoryListBinding>(R.layout.fragment_sensor_history_list) {
+class SensorHistoryListFragment :
+    BaseFragment<FragmentSensorHistoryListBinding>(R.layout.fragment_sensor_history_list) {
 
     private val sensorHistoryViewModel: SensorHistoryViewModel by activityViewModels()
     private lateinit var adapter: HistoryPagingAdapter
@@ -26,7 +27,6 @@ class SensorHistoryListFragment : BaseFragment<FragmentSensorHistoryListBinding>
         with(binding) {
             viewmodel = sensorHistoryViewModel
             lifecycleOwner = this@SensorHistoryListFragment
-            executePendingBindings()
         }
         initAdapter()
     }
