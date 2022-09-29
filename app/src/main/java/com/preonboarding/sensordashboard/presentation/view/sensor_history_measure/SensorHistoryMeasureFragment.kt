@@ -14,8 +14,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.github.mikephil.charting.components.Legend
 import com.preonboarding.sensordashboard.R
 import com.preonboarding.sensordashboard.common.base.BaseFragment
+import com.preonboarding.sensordashboard.common.constant.Constants.X
+import com.preonboarding.sensordashboard.common.constant.Constants.Y
+import com.preonboarding.sensordashboard.common.constant.Constants.Z
 import com.preonboarding.sensordashboard.databinding.FragmentSensorHistoryMeasureBinding
-import com.preonboarding.sensordashboard.domain.model.SensorHistory
 import com.preonboarding.sensordashboard.presentation.viewmodel.SensorHistoryMeasureViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -40,28 +42,28 @@ class SensorHistoryMeasureFragment :
     lateinit var sensorManager: SensorManager
 
     private lateinit var sensor: Sensor
+
     private val sensorHistoryMeasureViewModel: SensorHistoryMeasureViewModel by activityViewModels()
     private val format = DecimalFormat("#.####")
-    private lateinit var history: SensorHistory
+
     private var xList = mutableListOf<Float>()
     private var yList = mutableListOf<Float>()
     private var zList = mutableListOf<Float>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.vm = sensorHistoryMeasureViewModel
-
-        sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
         collectFlow()
         initView()
         initChart()
     }
+
     private fun registerSensorListener(listener: SensorEventListener, sensor: Sensor) {
         sensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_FASTEST)
     }
 
     private fun initView() {
         binding.apply {
+            vm = sensorHistoryMeasureViewModel
             tvHistoryMeasureStart.setOnClickListener {
                 Toast.makeText(it.context, "측정 시작", Toast.LENGTH_SHORT).show()
                 setMeasureButtonClickable(false)
@@ -173,15 +175,10 @@ class SensorHistoryMeasureFragment :
     }
 
     private fun getSensorData(event: SensorEvent) {
-
-        binding.tvHistoryMeasureX.text = format.format(event.values[0]).toString() //x축
-        binding.tvHistoryMeasureY.text = format.format(event.values[1]).toString() //y축
-        binding.tvHistoryMeasureZ.text = format.format(event.values[2]).toString() //z축
-
         sensorHistoryMeasureViewModel.updateCurrentMeasureValue(
-            event.values[0],
-            event.values[1],
-            event.values[2]
+            event.values[X],
+            event.values[Y],
+            event.values[Z]
         )
 
         xList.add(format.format(event.values[0]).toFloat())
