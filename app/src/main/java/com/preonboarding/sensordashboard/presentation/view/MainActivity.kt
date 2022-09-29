@@ -18,14 +18,5 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        set()
-    }
-
-    private fun set() {
-        val fragment = SensorHistoryMeasureFragment()
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.frameLayout,fragment)
-        transaction.commit()
     }
 }
