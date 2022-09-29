@@ -11,6 +11,7 @@ import com.preonboarding.sensordashboard.common.constant.Constants.X
 import com.preonboarding.sensordashboard.common.constant.Constants.Y
 import com.preonboarding.sensordashboard.common.constant.Constants.Z
 import com.preonboarding.sensordashboard.domain.model.MeasureValue
+import com.preonboarding.sensordashboard.domain.model.SensorHistory
 import com.preonboarding.sensordashboard.domain.usecase.SaveSensorHistoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -114,7 +115,8 @@ class SensorHistoryMeasureViewModel @Inject constructor(
         if (::job.isInitialized) job.cancel()
     }
 
-    fun saveSensorHistory() {
-//        saveSensorHistoryUseCase()
+    fun saveSensorHistory(history: SensorHistory) {
+        viewModelScope.launch { saveSensorHistoryUseCase(history) }
+
     }
 }
