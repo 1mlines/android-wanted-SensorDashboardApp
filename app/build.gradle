@@ -80,4 +80,7 @@ dependencies {
 
     // MPAndroidChart
     implementation "com.github.PhilJay:MPAndroidChart:v$chartVersion"
+
+    //Gson
+    implementation 'com.google.code.gson:gson:2.9.0'
 }
