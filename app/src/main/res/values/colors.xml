@@ -10,4 +10,5 @@
     <color name="xRed">#FF0000</color>
     <color name="yGreen">#00FF0A</color>
     <color name="zBlue">#003FFF</color>
+    <color name="selected_button">#03A9F4</color>
 </resources>

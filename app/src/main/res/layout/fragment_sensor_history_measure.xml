@@ -62,12 +62,16 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_history_acc_measure"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_button_unselected"
             android:text="@string/Accelerator"
-            app:layout_constraintEnd_toStartOf="@id/btn_history_gyro_measure"
+            app:layout_constraintEnd_toStartOf="@+id/btn_history_gyro_measure"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cl_main" />
+            app:layout_constraintTop_toBottomOf="@id/tv_history_timer" />
 
         <TextView
             android:id="@+id/tv_history_timer"
@@ -80,50 +84,51 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_history_gyro_measure"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/bg_button_unselected"
             android:text="@string/Gyroscope"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btn_history_acc_measure"
-            app:layout_constraintTop_toBottomOf="@id/cl_main" />
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_history_acc_measure"
+            app:layout_constraintTop_toTopOf="@id/btn_history_acc_measure" />
 
         <TextView
             android:id="@+id/tv_history_measure_x"
-            bindValue="@{vm.currentMeasureValue.x}"
+            bindValueX="@{vm.currentMeasureValue.x}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
             android:textColor="@color/xRed"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toStartOf="@id/tv_history_measure_y"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_history_timer"
+            app:layout_constraintTop_toBottomOf="@id/btn_history_acc_measure"
             tools:text="@string/x" />
 
         <TextView
             android:id="@+id/tv_history_measure_y"
-            bindValue="@{vm.currentMeasureValue.x}"
+            bindValueY="@{vm.currentMeasureValue.x}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/yGreen"
-            android:textSize="30sp"
-            app:layout_constraintBottom_toBottomOf="@id/tv_history_measure_x"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/chart_view"
             app:layout_constraintEnd_toStartOf="@id/tv_history_measure_z"
             app:layout_constraintStart_toEndOf="@id/tv_history_measure_x"
-            app:layout_constraintTop_toTopOf="@id/tv_history_measure_x"
             tools:text="@string/y" />
 
         <TextView
             android:id="@+id/tv_history_measure_z"
-            bindValue="@{vm.currentMeasureValue.x}"
+            bindValueZ="@{vm.currentMeasureValue.x}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
             android:textColor="@color/zBlue"
-            android:textSize="30sp"
-            app:layout_constraintBottom_toBottomOf="@id/tv_history_measure_x"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/chart_view"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_history_measure_y"
-            app:layout_constraintTop_toTopOf="@id/tv_history_measure_x"
             tools:text="@string/z" />
 
         <com.github.mikephil.charting.charts.LineChart

@@ -43,6 +43,7 @@ class SensorHistoryMeasureViewModel @Inject constructor(
         xEntries = arrayListOf(Entry(0f, 0f))
         yEntries = arrayListOf(Entry(0f, 0f))
         zEntries = arrayListOf(Entry(0f, 0f))
+        lineDataSet.clear()
         lineDataSet.apply {
             add(getLineDataSet(xEntries, "x", Color.RED))
             add(getLineDataSet(yEntries, "y", Color.GREEN))
@@ -65,8 +66,6 @@ class SensorHistoryMeasureViewModel @Inject constructor(
         type: String,
         colorType: Int
     ): LineDataSet {
-        // TODO 데이터세트 세팅 필요
-        // 정호님 화이팅
         return LineDataSet(entries, type).apply {
             color = colorType
             setCircleColor(colorType)
@@ -86,10 +85,8 @@ class SensorHistoryMeasureViewModel @Inject constructor(
         }
     }
 
-    // 선택된 히스토리 데이터 초기화용
-    fun setLineData(){
-        initLineData()
-        //TODO Item 넘겨받아 뷰모델 lineData 세팅 필요
+    fun refreshCurrentMeasureValue() {
+        _currentMeasureValue.value = MeasureValue()
     }
 
     fun timerStart(fnCallback: () -> Unit) {
