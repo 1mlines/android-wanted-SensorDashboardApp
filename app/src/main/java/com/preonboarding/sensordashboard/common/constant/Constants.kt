@@ -6,3 +6,7 @@ object Constants {
     const val Y = 1
     const val Z = 2
 }
+
+enum class ViewName{
+    MEASURE, PLAY, SHOW
+}

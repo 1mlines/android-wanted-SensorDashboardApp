@@ -49,11 +49,13 @@ class SensorHistoryMeasureFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.vm = sensorHistoryMeasureViewModel
+
+        sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
         collectFlow()
         initView()
         initChart()
     }
-
     private fun registerSensorListener(listener: SensorEventListener, sensor: Sensor) {
         sensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_FASTEST)
     }
