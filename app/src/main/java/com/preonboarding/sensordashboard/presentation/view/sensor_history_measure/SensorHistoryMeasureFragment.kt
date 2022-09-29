@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.service.autofill.Validators.or
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -85,6 +86,10 @@ class SensorHistoryMeasureFragment :
     private fun initView() {
         binding.apply {
             vm = sensorHistoryMeasureViewModel
+
+            ivBack.setOnClickListener {
+                //OnBackPressed()
+            }
 
             tvMenu.setOnClickListener {
                 if(xList.isNullOrEmpty()){
