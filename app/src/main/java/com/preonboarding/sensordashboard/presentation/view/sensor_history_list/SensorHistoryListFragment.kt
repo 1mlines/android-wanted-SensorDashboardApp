@@ -20,7 +20,9 @@ class SensorHistoryListFragment :
     BaseFragment<FragmentSensorHistoryListBinding>(R.layout.fragment_sensor_history_list) {
 
     private val sensorHistoryViewModel: SensorHistoryViewModel by activityViewModels()
-    private lateinit var adapter: HistoryPagingAdapter
+    private val adapter: HistoryPagingAdapter by lazy {
+        HistoryPagingAdapter()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
