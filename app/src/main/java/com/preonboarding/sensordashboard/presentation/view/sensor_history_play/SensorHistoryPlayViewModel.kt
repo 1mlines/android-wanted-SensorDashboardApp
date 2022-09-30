@@ -65,6 +65,15 @@ class SensorHistoryPlayViewModel @Inject constructor(
                     add(getLineDataSet(xValues, "x", Color.RED))
                     add(getLineDataSet(yValues, "y", Color.GREEN))
                     add(getLineDataSet(zValues, "z", Color.BLUE))
+
+                    _currentMeasureValue.update {
+                        _currentMeasureValue.value.copy(
+                            xValues[lastIndex].y,
+                            yValues[lastIndex].y,
+                            zValues[lastIndex].y
+                        )
+                    }
+
                 }
                 else -> {
                     add(getLineDataSet(xEntries, "x", Color.RED))
