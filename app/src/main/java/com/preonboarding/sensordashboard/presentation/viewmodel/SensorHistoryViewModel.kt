@@ -22,20 +22,23 @@ class SensorHistoryViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private val _historyList: MutableStateFlow<PagingData<SensorHistory>> =
-        MutableStateFlow<PagingData<SensorHistory>>(PagingData.empty())
+        MutableStateFlow(PagingData.empty())
     val historyList: StateFlow<PagingData<SensorHistory>> = _historyList.asStateFlow()
 
-    fun sensorHistoryList() {
+    fun getSensorHistoryList() {
         viewModelScope.launch {
-            getSensorHistoryListUseCase.invoke().cachedIn(viewModelScope).collectLatest {
-                _historyList.emit(it)
-            }
+            getSensorHistoryListUseCase()
+                .cachedIn(viewModelScope)
+                .collectLatest {
+                    _historyList.emit(it)
+                }
         }
     }
 
-    fun deleteSensorHistory(sensorHistory: SensorHistory){
+    fun deleteSensorHistory(sensorHistory: SensorHistory) {
         viewModelScope.launch {
             deleteSensorHistoryUseCase(sensorHistory)
+            getSensorHistoryList()
         }
     }
 }

@@ -6,7 +6,6 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -23,7 +22,6 @@ import com.preonboarding.sensordashboard.domain.model.SensorHistory
 import com.preonboarding.sensordashboard.presentation.viewmodel.SensorHistoryMeasureViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -82,9 +80,7 @@ class SensorHistoryMeasureFragment :
 
             tvMenu.setOnClickListener {
                 if (xList.isNullOrEmpty()) {
-                    Toast.makeText(it.context, "데이터가 없습니다.", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(it.context, "저장 완료", Toast.LENGTH_SHORT).show()
                     sensorHistoryMeasureViewModel.timerStop()
                     history = SensorHistory(
                         0,
@@ -96,7 +92,6 @@ class SensorHistoryMeasureFragment :
                         zList.toList()
                     )
                     sensorHistoryMeasureViewModel.saveSensorHistory(history)
-                    Timber.d("history : $history")
                     sensorManager.unregisterListener(sensorEventListener)
                     xList.clear()
                     yList.clear()
@@ -107,19 +102,15 @@ class SensorHistoryMeasureFragment :
 
             tvHistoryMeasureStart.setOnClickListener {
                 if (::sensor.isInitialized) {
-                    Toast.makeText(requireContext(), "측정 시작", Toast.LENGTH_SHORT).show()
                     setMeasureButtonClickable(false)
                     registerSensorListener(sensorEventListener, sensor)
                     setTimer()
                     tvHistoryMeasureStop.isClickable = true
-                } else {
-                    Toast.makeText(requireContext(), "센서를 선택해 주세요", Toast.LENGTH_SHORT).show()
                 }
             }
 
 
             tvHistoryMeasureStop.setOnClickListener {
-                Toast.makeText(it.context, "측정 중지", Toast.LENGTH_SHORT).show()
                 setMeasureButtonClickable(true)
                 sensorManager.unregisterListener(sensorEventListener)
                 sensorHistoryMeasureViewModel.timerStop()
@@ -142,7 +133,6 @@ class SensorHistoryMeasureFragment :
     }
 
     private fun initChart() {
-        // TODO 차트 세팅 필요 정호님에게 맡기겠습니다
         binding.chartView.apply {
             xAxis.apply {
                 axisMaximum = 600.0f
@@ -220,11 +210,6 @@ class SensorHistoryMeasureFragment :
                     sensorManager.unregisterListener(sensorEventListener)
                 }
             }
-
-            if (xList.isNotEmpty()) {
-                Timber.d("현재 값 : ${xList[xList.lastIndex]},${yList[yList.lastIndex]},${zList[zList.lastIndex]}")
-            }
-
         }
         sensorHistoryMeasureViewModel.timerStart(timerAction)
     }

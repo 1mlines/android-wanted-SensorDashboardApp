@@ -7,9 +7,9 @@ import androidx.paging.map
 import com.preonboarding.sensordashboard.data.local.dao.SensorHistoryDao
 import com.preonboarding.sensordashboard.data.local.datasource.SensorHistoryLocalDataSource
 import com.preonboarding.sensordashboard.data.local.entity.toEntity
+import com.preonboarding.sensordashboard.data.paging.HistoryPagingSource
 import com.preonboarding.sensordashboard.domain.model.SensorHistory
 import com.preonboarding.sensordashboard.domain.repository.SensorHistoryRepository
-import com.preonboarding.sensordashboard.data.paging.HistoryPagingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -42,7 +42,7 @@ class SensorHistoryRepositoryImpl @Inject constructor(
                 enablePlaceholders = false
             ),
             pagingSourceFactory = { HistoryPagingSource(dao) }
-        ).flow).map { sensorHistoryEntityList->
+        ).flow).map { sensorHistoryEntityList ->
             sensorHistoryEntityList.map {
                 it.toModel()
             }

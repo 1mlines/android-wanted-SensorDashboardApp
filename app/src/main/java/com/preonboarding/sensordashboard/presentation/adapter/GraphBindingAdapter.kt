@@ -24,6 +24,11 @@ fun TextView.bindValueZ(value: Float) {
 @BindingAdapter("bindTime")
 fun TextView.bindTime(size: Int) {
     val sizeToString = size.toString()
-    val formatData = sizeToString.substring(0, 2) + "." + sizeToString.last()
-    text = formatData
+    if (sizeToString.length == 1) {
+        text = "0." + sizeToString
+    } else {
+        val lastString = "." + sizeToString.last()
+        val formatData = sizeToString.substring(0, sizeToString.lastIndex) + lastString
+        text = formatData
+    }
 }

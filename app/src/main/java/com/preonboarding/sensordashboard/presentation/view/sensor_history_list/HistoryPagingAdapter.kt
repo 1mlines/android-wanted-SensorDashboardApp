@@ -2,13 +2,15 @@ package com.preonboarding.sensordashboard.presentation.view.sensor_history_list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.preonboarding.sensordashboard.R
 import com.preonboarding.sensordashboard.databinding.ItemHistoryRvBinding
 import com.preonboarding.sensordashboard.domain.model.SensorHistory
 
-class HistoryPagingAdapter :
+class HistoryPagingAdapter(private val itemClickListener: (SensorHistory) -> Unit) :
     PagingDataAdapter<SensorHistory, HistoryPagingAdapter.ViewHolder>(diffCallback) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -19,15 +21,29 @@ class HistoryPagingAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            ItemHistoryRvBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
-            )
+            DataBindingUtil.inflate(
+                LayoutInflater.from(parent.context),
+                R.layout.item_history_rv,
+                parent, false
+            ),
+            itemClickListener
         )
     }
 
     class ViewHolder(
-        private val binding: ItemHistoryRvBinding
+        private val binding: ItemHistoryRvBinding,
+        private val itemClickListener: (SensorHistory) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.apply {
+                rvBtnDel.setOnClickListener {
+                    data?.let {
+                        itemClickListener(it)
+                    }
+                }
+            }
+        }
 
         fun bind(item: SensorHistory) {
             with(binding) {
