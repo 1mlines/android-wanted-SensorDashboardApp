@@ -327,18 +327,14 @@ fun updateCurrentMeasureValue(x: Float, y: Float, z: Float) {
 센서값이 측정될 때마다 측정된 값을 _currentMeasureValue에 업데이트 합니다.
 
 ```kotlin
-viewLifecycleOwner.lifecycleScope.launch{
-	viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
-		sensorHistoryMeasureViewModel.currentMeasureValue.collect(){measureValue->
-				sensorHistoryMeasureViewModel.addEntry(
-					measureValue.x,
-					measureValue.y,
-					measureValue.z
-        )
-        binding.chartView.apply{
-					notifyDataSetChanged()
-             invalidate()
-				}
+viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                sensorHistoryMeasureViewModel.currentMeasureValue.collect() { measureValue ->
+                    sensorHistoryMeasureViewModel.addEntry(
+                        measureValue.x,
+                        measureValue.y,
+                        measureValue.z
+                    )
 	...
 ```
 
