@@ -4,16 +4,21 @@ import android.view.View
 import androidx.databinding.BindingAdapter
 import androidx.navigation.findNavController
 import com.preonboarding.sensordashboard.common.constant.ViewName
+import com.preonboarding.sensordashboard.domain.model.SensorHistory
 import com.preonboarding.sensordashboard.presentation.view.sensor_history_list.SensorHistoryListFragmentDirections
 
-@BindingAdapter("app:navigateTo")
-fun navigateTo(view: View, viewName: ViewName) {
+@BindingAdapter("app:navigateToMeasure")
+fun navigateToMeasure(view: View, dummy: Any?) {
     view.setOnClickListener {
-        val action = when (viewName) {
-            ViewName.MEASURE -> SensorHistoryListFragmentDirections.actionSensorHistoryListFragmentToSensorHistoryMeasureFragment()
-            ViewName.PLAY -> SensorHistoryListFragmentDirections.actionSensorHistoryListFragmentToSensorHistoryPlayFragment()
-            ViewName.SHOW -> SensorHistoryListFragmentDirections.actionSensorHistoryListFragmentToSensorHistoryShowFragment()
-        }
+        val action = SensorHistoryListFragmentDirections.actionSensorHistoryListFragmentToSensorHistoryMeasureFragment()
+        view.findNavController().navigate(action)
+    }
+}
+
+@BindingAdapter("app:history", "app:viewName")
+fun navigateToPlay(view: View, history: SensorHistory, viewName: ViewName) {
+    view.setOnClickListener {
+        val action = SensorHistoryListFragmentDirections.actionSensorHistoryListFragmentToSensorHistoryPlayFragment(history, viewName)
         view.findNavController().navigate(action)
     }
 }
