@@ -29,5 +29,12 @@
     <fragment
         android:id="@+id/sensorHistoryPlayFragment"
         android:name="com.preonboarding.sensordashboard.presentation.view.sensor_history_play.SensorHistoryPlayFragment"
-        android:label="SensorHistoryPlayFragment" />
+        android:label="SensorHistoryPlayFragment" >
+        <argument
+            android:name="History"
+            app:argType="com.preonboarding.sensordashboard.domain.model.SensorHistory" />
+        <argument
+            android:name="ViewName"
+            app:argType="com.preonboarding.sensordashboard.common.constant.ViewName" />
+    </fragment>
 </navigation>
