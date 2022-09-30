@@ -8,10 +8,14 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.preonboarding.sensordashboard.common.base.BaseViewModel
 import com.preonboarding.sensordashboard.common.constant.ViewName
+import com.preonboarding.sensordashboard.domain.model.MeasureValue
 import com.preonboarding.sensordashboard.domain.model.SensorHistory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,6 +23,9 @@ import javax.inject.Inject
 class SensorHistoryPlayViewModel @Inject constructor(
 ) : BaseViewModel() {
     var isPlay: Boolean = false
+
+    private val _currentMeasureValue = MutableStateFlow(MeasureValue())
+    val currentMeasureValue = _currentMeasureValue.asStateFlow()
 
     private lateinit var currentHistory: SensorHistory
 
@@ -93,6 +100,11 @@ class SensorHistoryPlayViewModel @Inject constructor(
             for (i in drawIndex until xValues.size) {
                 delay(50)
                 drawIndex = i
+
+                _currentMeasureValue.update {
+                    _currentMeasureValue.value.copy(xValues[i].y, yValues[i].y, zValues[i].y)
+                }
+
                 lineData.addEntry(xValues[i], 0)
                 lineData.addEntry(yValues[i], 1)
                 lineData.addEntry(zValues[i], 2)

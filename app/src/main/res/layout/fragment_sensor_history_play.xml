@@ -53,10 +53,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            tools:text="2022/09/07 15:10:11"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cl_main" />
+            app:layout_constraintTop_toBottomOf="@id/cl_main"
+            tools:text="2022/09/07 15:10:11" />
 
         <TextView
             android:id="@+id/tv_sub_title"
@@ -69,6 +69,45 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_date" />
+
+        <TextView
+            android:id="@+id/tv_history_measure_x"
+            bindValueX="@{vm.currentMeasureValue.x}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/xRed"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_sub_title"
+            tools:text="@string/x" />
+
+        <TextView
+            android:id="@+id/tv_history_measure_y"
+            bindValueY="@{vm.currentMeasureValue.y}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/yGreen"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@id/tv_history_measure_z"
+            app:layout_constraintStart_toEndOf="@id/tv_history_measure_x"
+            app:layout_constraintTop_toBottomOf="@id/tv_sub_title"
+            tools:text="@string/y" />
+
+        <TextView
+            android:id="@+id/tv_history_measure_z"
+            bindValueZ="@{vm.currentMeasureValue.z}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="@color/zBlue"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_sub_title"
+            tools:text="@string/z" />
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/line_chart"
@@ -98,12 +137,12 @@
             android:layout_marginStart="32dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_stop_48"
-            tools:text="0.0"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/btn_control"
             app:layout_constraintStart_toEndOf="@id/btn_control"
-            app:layout_constraintTop_toTopOf="@id/btn_control" />
+            app:layout_constraintTop_toTopOf="@id/btn_control"
+            tools:text="0.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
