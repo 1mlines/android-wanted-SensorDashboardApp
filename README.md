@@ -286,7 +286,7 @@ lateinit var sensorManager: SensorManager
 센서 매니저는 DI를 통해 사용합니다.
 
 ```kotlin
-private funsetSensorType(sensorType: Int) {
+private fun setSensorType(sensorType: Int) {
     sensorManager.unregisterListener(sensorEventListener)
     sensor = sensorManager.getDefaultSensor(sensorType)
 }
