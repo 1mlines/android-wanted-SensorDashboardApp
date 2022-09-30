@@ -199,7 +199,7 @@ fun navigateUp(view: View, dummy: Any?) {
 
 ### 2) ToolBar 구현
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3cff8e02-7365-41c9-a16f-51967ca23990/Untitled.png)
+<img width="520" alt="Untitled (12)" src="https://user-images.githubusercontent.com/66052467/193164213-5a3cca0c-4208-473f-b695-7030011bead1.png">
 
 ## 아쉬운점
 
