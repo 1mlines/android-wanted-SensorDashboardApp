@@ -3,9 +3,12 @@ package com.preonboarding.sensordashboard.presentation.view.sensor_history_play
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.preonboarding.sensordashboard.R
 import com.preonboarding.sensordashboard.common.base.BaseFragment
+import com.preonboarding.sensordashboard.common.constant.ViewName
 import com.preonboarding.sensordashboard.databinding.FragmentSensorHistoryPlayBinding
+import com.preonboarding.sensordashboard.domain.model.SensorHistory
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,11 +21,27 @@ class SensorHistoryPlayFragment :
         super.onViewCreated(view, savedInstanceState)
         binding.vm = sensorHistoryPlayViewModel
 
-        initLineChart()
-        initView()
+        val args: SensorHistoryPlayFragmentArgs by navArgs()
+
+        initLineChart(args.history, args.viewName)
+        initView(args.history, args.viewName)
     }
 
-    private fun initView() {
+    private fun initView(history: SensorHistory, viewName: ViewName) {
+
+        when(viewName) {
+            ViewName.PLAY -> {
+                binding.tvSubTitle.text = getString(R.string.play)
+            }
+            else -> {
+                binding.tvTimer.visibility = View.GONE
+                binding.btnControl.visibility = View.GONE
+                binding.tvSubTitle.text = getString(R.string.view)
+            }
+        }
+
+        binding.tvDate.text = history.publishedAt
+
         binding.btnControl.setOnClickListener {
             if (sensorHistoryPlayViewModel.isPlay) {
                 stopPlay()
@@ -42,11 +61,10 @@ class SensorHistoryPlayFragment :
         }
     }
 
-    private fun initLineChart() {
+    private fun initLineChart(history: SensorHistory, viewName: ViewName) {
 
-        // ViewName == Play
+        sensorHistoryPlayViewModel.initLineData(history, viewName)
 
-        // ViewName == View
         binding.lineChart.apply {
             data = sensorHistoryPlayViewModel.lineData
             setScaleEnabled(true)
