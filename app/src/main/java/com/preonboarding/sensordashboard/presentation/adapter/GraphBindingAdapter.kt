@@ -20,3 +20,10 @@ fun TextView.bindValueZ(value: Float) {
     val formatData = String.format("%.4f", value)
     text = "Z: $formatData"
 }
+
+@BindingAdapter("bindTime")
+fun TextView.bindTime(size: Int) {
+    val sizeToString = size.toString()
+    val formatData = sizeToString.substring(0, 2) + "." + sizeToString.last()
+    text = formatData
+}
