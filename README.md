@@ -210,10 +210,102 @@ fun navigateUp(view: View, dummy: Any?) {
 # 노유리
 
 ## 맡은 역할
+<imr grc="https://user-images.githubusercontent.com/51072429/193285322-888d7264-8d97-4dc9-9a0c-816e3ee2aaf3.jpg" width="250">
+
+- 목록 RecyclerView 보여주기 
+- Infinete Scroll 
 
 ## 기능 설명
 
+```kotlin
+@Dao
+interface SensorHistoryDao {
+    @Query("SELECT * from sensor_history_table ORDER BY publishedAt DESC LIMIT :loadSize OFFSET (:page - 1) * :loadSize")
+    suspend fun getSensorDataList(page: Int, loadSize: Int): List<SensorHistoryEntity>
+}
+```
+실제로 룸데이터에 동작할 쿼리문입니다.
+
+```kotlin
+class HistoryPagingSource(
+    private val dao: SensorHistoryDao
+) : PagingSource<Int, SensorHistoryEntity>() {
+
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, SensorHistoryEntity> {
+        val page = params.key ?: 1
+        return try {
+            val items = dao.getSensorDataList(page, params.loadSize)
+            LoadResult.Page(
+                data = items,
+                prevKey = if (page == 1) null else page - 1,
+                nextKey = if (items.isEmpty()) null else page + 1
+            )
+        } catch (e: Exception) {
+            return LoadResult.Error(e)
+        }
+    }
+
+    override fun getRefreshKey(state: PagingState<Int, SensorHistoryEntity>): Int? {
+        return state.anchorPosition?.let { anchorPosition ->
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+        }
+    }
+}
+```
+로컬 데이터를 불러오는 것을 담당하는 추상 클래스인데, 데이터 소스를 정의하고 데이터를 가져오는 방법을 정의합니다.
+
+```kotlin
+class HistoryPagingAdapter :
+    PagingDataAdapter<SensorHistory, HistoryPagingAdapter.ViewHolder>(diffCallback) {
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        getItem(position)?.let {
+            holder.bind(it)
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder(
+            ItemHistoryRvBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
+    }
+
+    class ViewHolder(
+        private val binding: ItemHistoryRvBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: SensorHistory) {
+            with(binding) {
+                data = item
+                executePendingBindings()
+            }
+        }
+    }
+
+    companion object {
+        private val diffCallback = object : DiffUtil.ItemCallback<SensorHistory>() {
+            override fun areItemsTheSame(oldItem: SensorHistory, newItem: SensorHistory): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(
+                oldItem: SensorHistory,
+                newItem: SensorHistory
+            ): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
+}
+```
+리시이클러뷰 페이징 어댑터에서는 가공한 데이터들을 리사이클러뷰에 바인드하게 됩니다.
+
 ## 아쉬운점
+- 세개의 레이어로 나뉘는 clean architecture와 mvvm패턴에 대한 학습이 부족해서 프로젝트에 적용하는데 시간을 많이 소모했던 것이 많이 아쉽습니다.
+
 
 # 황준성
 
