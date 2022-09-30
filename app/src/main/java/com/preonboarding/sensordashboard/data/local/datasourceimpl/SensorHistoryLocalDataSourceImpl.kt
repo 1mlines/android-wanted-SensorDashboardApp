@@ -10,7 +10,8 @@ class SensorHistoryLocalDataSourceImpl @Inject constructor(
     private val sensorHistoryDao: SensorHistoryDao,
 ) : SensorHistoryLocalDataSource {
 
-    override fun getSensorHistoryList(): Flow<List<SensorHistoryEntity>> = sensorHistoryDao.getSensorHistoryList()
+    override fun getSensorHistoryList(): Flow<List<SensorHistoryEntity>> =
+        sensorHistoryDao.getSensorHistoryList()
 
     override suspend fun saveSensorHistory(sensorHistory: SensorHistoryEntity) {
         sensorHistoryDao.saveSensorHistory(sensorHistory)
