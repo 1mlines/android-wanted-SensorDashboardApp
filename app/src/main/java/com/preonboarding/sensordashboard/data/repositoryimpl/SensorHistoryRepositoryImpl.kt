@@ -35,10 +35,10 @@ class SensorHistoryRepositoryImpl @Inject constructor(
         sensorHistoryLocalDataSource.deleteSensorHistory(sensorHistory.toEntity())
     }
 
-    override fun getSensorDataList(): Flow<PagingData<SensorHistory>> {
+    override suspend fun getSensorDataList(): Flow<PagingData<SensorHistory>> {
         return (Pager(
             config = PagingConfig(
-                pageSize = 5,
+                pageSize = 10,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = { HistoryPagingSource(dao) }

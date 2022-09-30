@@ -18,7 +18,7 @@
     <string name="list_Acc">Accelerometer</string>
     <string name="list_gyro">Gyro</string>
     <string name="play">Play</string>
-    <string name="delete">Delete</string>
+    <string name="delete">Del</string>
     <string name="view">View</string>
     <string name="play_show_title">다시보기</string>
 
