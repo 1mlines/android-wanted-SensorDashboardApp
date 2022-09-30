@@ -6,6 +6,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -79,8 +80,7 @@ class SensorHistoryMeasureFragment :
             vm = sensorHistoryMeasureViewModel
 
             tvMenu.setOnClickListener {
-                if (xList.isNullOrEmpty()) {
-                } else {
+                if (!xList.isNullOrEmpty()) {
                     sensorHistoryMeasureViewModel.timerStop()
                     history = SensorHistory(
                         0,
@@ -96,7 +96,7 @@ class SensorHistoryMeasureFragment :
                     xList.clear()
                     yList.clear()
                     zList.clear()
-
+                    Toast.makeText(requireContext(), "저장이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
 
