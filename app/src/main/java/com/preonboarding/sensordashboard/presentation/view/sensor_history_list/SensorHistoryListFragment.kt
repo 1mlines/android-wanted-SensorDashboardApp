@@ -30,6 +30,7 @@ class SensorHistoryListFragment :
         }
         initAdapter()
         initViewmodel()
+        sensorHistoryViewModel.sensorHistoryList()
     }
 
     private fun initAdapter() {
@@ -39,7 +40,7 @@ class SensorHistoryListFragment :
     private fun initViewmodel() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                sensorHistoryViewModel.sensorHistoryList.collectLatest {
+                sensorHistoryViewModel.historyList.collectLatest {
                     adapter.submitData(it)
                 }
             }

@@ -19,7 +19,4 @@ class SensorHistoryLocalDataSourceImpl @Inject constructor(
     override suspend fun deleteSensorHistory(sensorHistory: SensorHistoryEntity) {
         sensorHistoryDao.deleteSensorHistory(sensorHistory)
     }
-
-    override suspend fun getSensorDataList(): List<SensorHistoryEntity> =
-        sensorHistoryDao.getSensorDataList()
 }

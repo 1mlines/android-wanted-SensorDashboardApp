@@ -20,6 +20,6 @@ interface SensorHistoryDao {
     @Delete
     suspend fun deleteSensorHistory(sensorHistory: SensorHistoryEntity)
 
-    @Query("SELECT * from sensor_history_table ORDER BY publishedAt DESC")
-    suspend fun getSensorDataList(): List<SensorHistoryEntity>
+    @Query("SELECT * from sensor_history_table ORDER BY publishedAt DESC LIMIT :loadSize OFFSET (:page - 1) * :loadSize")
+    suspend fun getSensorDataList(page: Int, loadSize: Int): List<SensorHistoryEntity>
 }

@@ -8,5 +8,5 @@ interface SensorHistoryRepository {
     fun getSensorHistoryList(): Flow<List<SensorHistory>>
     suspend fun saveSensorHistory(sensorHistory: SensorHistory)
     suspend fun deleteSensorHistory(sensorHistory: SensorHistory)
-    fun getSensorDataList(): Flow<PagingData<SensorHistory>>
+    suspend fun getSensorDataList(): Flow<PagingData<SensorHistory>>
 }
