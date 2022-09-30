@@ -73,7 +73,7 @@ class SensorHistoryMeasureFragment :
 
 
     private fun registerSensorListener(listener: SensorEventListener, sensor: Sensor) {
-        sensorManager.registerListener(listener, sensor, 100000)
+        sensorManager.registerListener(listener, sensor, 110000)
     }
 
     private fun initView() {
@@ -85,13 +85,12 @@ class SensorHistoryMeasureFragment :
                     Toast.makeText(it.context, "데이터가 없습니다.", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(it.context, "저장 완료", Toast.LENGTH_SHORT).show()
-                    val period = binding.tvHistoryTimer.text
                     sensorHistoryMeasureViewModel.timerStop()
                     history = SensorHistory(
                         0,
                         sensorType,
                         dateFormat.format(Date(System.currentTimeMillis())),
-                        period.toString(),
+                        xList.size.toString(),
                         xList.toList(),
                         yList.toList(),
                         zList.toList()
@@ -221,8 +220,6 @@ class SensorHistoryMeasureFragment :
                     sensorManager.unregisterListener(sensorEventListener)
                 }
             }
-
-            binding.tvHistoryTimer.text = "${ss}.${ms++}"
 
             if (xList.isNotEmpty()) {
                 Timber.d("현재 값 : ${xList[xList.lastIndex]},${yList[yList.lastIndex]},${zList[zList.lastIndex]}")
