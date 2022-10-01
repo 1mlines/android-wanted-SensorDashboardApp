@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.preonboarding.sensordashboard.presentation.viewmodel.SensorHistoryMeasureViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.view.sensor_history_measure.SensorHistoryMeasureFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_main"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:contentDescription="@string/back"
+                android:paddingHorizontal="12dp"
+                android:src="@drawable/ic_arrow_back_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:navigateUp="@{null}" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                style="@style/ToolbarTitle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:text="@string/do_measure"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_menu"
+                style="@style/ToolbarMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:paddingHorizontal="12dp"
+                android:text="@string/save"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_history_acc_measure"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_button_unselected"
+            android:text="@string/Accelerator"
+            app:layout_constraintEnd_toStartOf="@+id/btn_history_gyro_measure"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_main" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_history_gyro_measure"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/bg_button_unselected"
+            android:text="@string/Gyroscope"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_history_acc_measure"
+            app:layout_constraintTop_toTopOf="@id/btn_history_acc_measure" />
+
+        <TextView
+            android:id="@+id/tv_history_measure_x"
+            bindValueX="@{vm.currentMeasureValue.x}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/xRed"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_history_acc_measure"
+            tools:text="@string/x" />
+
+        <TextView
+            android:id="@+id/tv_history_measure_y"
+            bindValueY="@{vm.currentMeasureValue.y}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/yGreen"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/chart_view"
+            app:layout_constraintEnd_toStartOf="@id/tv_history_measure_z"
+            app:layout_constraintStart_toEndOf="@id/tv_history_measure_x"
+            tools:text="@string/y" />
+
+        <TextView
+            android:id="@+id/tv_history_measure_z"
+            bindValueZ="@{vm.currentMeasureValue.z}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:textColor="@color/zBlue"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/chart_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="@string/z" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart_view"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_history_measure_x" />
+
+        <TextView
+            android:id="@+id/tv_history_measure_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/measure"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tv_history_measure_stop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chart_view" />
+
+        <TextView
+            android:id="@+id/tv_history_measure_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/measure_stop"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_history_measure_start" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

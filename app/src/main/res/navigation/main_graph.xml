@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/sensorHistoryListFragment">
+
+    <fragment
+        android:id="@+id/sensorHistoryListFragment"
+        android:name="com.preonboarding.sensordashboard.presentation.view.sensor_history_list.SensorHistoryListFragment"
+        android:label="SensorHistoryListFragment" >
+        <action
+            android:id="@+id/action_sensorHistoryListFragment_to_sensorHistoryShowFragment"
+            app:destination="@id/sensorHistoryShowFragment" />
+        <action
+            android:id="@+id/action_sensorHistoryListFragment_to_sensorHistoryPlayFragment"
+            app:destination="@id/sensorHistoryPlayFragment" />
+        <action
+            android:id="@+id/action_sensorHistoryListFragment_to_sensorHistoryMeasureFragment"
+            app:destination="@id/sensorHistoryMeasureFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sensorHistoryMeasureFragment"
+        android:name="com.preonboarding.sensordashboard.presentation.view.sensor_history_measure.SensorHistoryMeasureFragment"
+        android:label="SensorHistoryMeasureFragment" />
+    <fragment
+        android:id="@+id/sensorHistoryShowFragment"
+        android:name="com.preonboarding.sensordashboard.presentation.view.sensor_history_show.SensorHistoryShowFragment"
+        android:label="SensorHistoryShowFragment" />
+    <fragment
+        android:id="@+id/sensorHistoryPlayFragment"
+        android:name="com.preonboarding.sensordashboard.presentation.view.sensor_history_play.SensorHistoryPlayFragment"
+        android:label="SensorHistoryPlayFragment" >
+        <argument
+            android:name="History"
+            app:argType="com.preonboarding.sensordashboard.domain.model.SensorHistory" />
+        <argument
+            android:name="ViewName"
+            app:argType="com.preonboarding.sensordashboard.common.constant.ViewName" />
+    </fragment>
+</navigation>
