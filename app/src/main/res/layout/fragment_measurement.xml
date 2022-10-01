@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="com.preonboarding.sensordashboard.domain.model.MeasureTarget" />
+
+        <variable
+            name="fragment"
+            type="com.preonboarding.sensordashboard.presentation.measurement.MeasurementFragment"/>
+
+        <variable
+            name="measureTarget"
+            type="com.preonboarding.sensordashboard.domain.model.MeasureTarget" />
+
+        <variable
+            name="viewModel"
+            type="com.preonboarding.sensordashboard.presentation.measurement.MeasurementViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/abl_measurement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/tb_measurement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:contentInsetStartWithNavigation="0dp"
+                app:navigationIcon="@drawable/ic_back_24"
+                app:navigationIconTint="@color/white"
+                app:title="@string/measurement"
+                app:titleCentered="true"
+                app:titleTextColor="@color/white" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_measure_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/bg_measurement_target_box"
+            android:padding="1dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginHorizontal="@dimen/margin_background_default"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/abl_measurement">
+
+            <TextView
+                android:id="@+id/tv_measure_acc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:text="@string/measure_acc_text"
+                android:textSize="18sp"
+                android:paddingVertical="8dp"
+                android:onClick="@{() -> fragment.changeMeasureTarget()}"
+                android:background="@{measureTarget == MeasureTarget.ACC ? @color/blue_200 : @color/white}"/>
+            <TextView
+                android:id="@+id/tv_measure_gyro"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:text="@string/measure_gyro_text"
+                android:textSize="18sp"
+                android:paddingVertical="8dp"
+                android:onClick="@{() -> fragment.changeMeasureTarget()}"
+                android:background="@{measureTarget == MeasureTarget.GYRO ? @color/blue_200 : @color/white}"/>
+        </LinearLayout>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/measurement_line_chart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginHorizontal="@dimen/margin_background_default"
+            app:layout_constraintTop_toBottomOf="@id/layout_measure_type"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_measure_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            bindTime="@{viewModel.curSecond}"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="@dimen/margin_background_default"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/measurement_line_chart" />
+
+        <LinearLayout
+            android:id="@+id/layout_measurement_start_stop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="@dimen/margin_background_default"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_measure_time">
+
+            <Button
+                android:id="@+id/btn_measure_start"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="40dp"
+                android:text="@string/measure_start_btn_text"
+                android:textStyle="bold"
+                android:paddingVertical="@dimen/padding_vertical_btn_default"
+                android:onClick="@{() -> fragment.startMeasurement()}"
+                style="?android:attr/buttonBarButtonStyle" />
+            <Button
+                android:id="@+id/btn_measure_pause"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/measure_pause_btn_text"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:paddingVertical="@dimen/padding_vertical_btn_default"
+                android:onClick="@{() -> fragment.stopMeasurement()}"
+                style="?android:attr/buttonBarButtonStyle" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_measure_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/measure_save_btn_text"
+            android:onClick="@{() -> fragment.saveMeasurement()}"
+            android:paddingVertical="@dimen/padding_vertical_btn_default"
+            android:layout_marginTop="@dimen/margin_background_default"
+            android:layout_marginHorizontal="@dimen/margin_background_default"
+            app:layout_constraintTop_toBottomOf="@id/layout_measurement_start_stop"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

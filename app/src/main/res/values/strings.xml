@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">android-wanted-SensorDashboardApp</string>
+    <string name="dashboard">대시보드</string>
+    <string name="replay">다시보기</string>
+    <string name="measurement">측정하기</string>
+
+    <!-- 측정 -->
+    <string name="measure_acc_text">Acc</string>
+    <string name="measure_gyro_text">Gyro</string>
+    <string name="measure_start_btn_text">측정</string>
+    <string name="measure_pause_btn_text">정지</string>
+    <string name="measure_save_btn_text">저장</string>
+    <string name="measure_snack_bar_empty_text">측정 값이 비었습니다.</string>
+    <string name="measure_snack_bar_second_text">최대 60초까지 측정 가능합니다.</string>
+    <string name="measure_snack_bar_measuring_text">아직 값을 측정중입니다.\n정지를 누르고 저장해주세요.</string>
+    <string name="measure_snack_bar_save_text">저장되었습니다.</string>
+    <string name="measure_snack_bar_not_save_text">저장에 실패했습니다.\n다시 시도해주세요.</string>
+    <string name="option">옵션</string>
+    <string name="play">재생하기</string>
+
 </resources>
